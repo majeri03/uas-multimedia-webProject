@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VISUAL CORE | Project</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <header class="main-header">
+        <nav class="main-nav">
+            <a href="#hero" class="nav-logo">VISUAL CORE</a>
+            <button class="hamburger-menu" aria-label="Buka Menu">
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+        </button>
+            <ul>
+                <li><a href="#tim">Tim</a></li>
+                <li><a href="#filosofi">Filosofi</a></li>
+                <li><a href="#galeri">Galeri</a></li>
+                <li><a href="#video">Video</a></li>
+                <li><a href="#proses">Proses</a></li>
+                <li><a href="#kontak">Kontak</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <canvas id="bg-canvas"></canvas>
+            <div class="content">
+                <h1>VISUAL CORE</h1>
+                <p>An interactive digital experience.</p>
+            </div>
+        </section>
+
+        <section id="tim">
+            <h2>Tim Kreator</h2>
+        </section>
+
+        <section id="filosofi">
+            <h2>Filosofi Proyek</h2>
+        </section>
+
+        <section id="galeri">
+            <h2>Galeri Digital</h2>
+        </section>
+
+        <section id="video">
+            <h2>Dokumentasi Video</h2>
+        </section>
+
+        <section id="proses">
+            <h2>Proses Kreasi</h2>
+        </section>
+
+        <section id="kontak">
+            <h2>Kontak</h2>
+        </section>
+    </main>
+    
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.165.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.165.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="main.js"></script>
+</body>
+</html>
