@@ -50,17 +50,358 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
     margin-left: 0.2em; /* Beri sedikit jarak dari kata 'VISUAL' */
 }
 
-
-.attribution {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    text-align: center;
-    margin-top: 50px;
+/* --- GAYA UNTUK BAGIAN TIM KREATOR --- */
+#tim {
+    position: relative; /* Diperlukan untuk lapisan overlay */
+    background-image: url('assets/images/tim.jpeg'); /* <-- Ganti dengan path foto Anda */
+    background-size: cover; /* Memastikan gambar menutupi seluruh area */
+    background-position: center center; /* Posisi gambar di tengah */
+    background-attachment: fixed; /* Efek paralaks keren saat scroll */
+    color: white; /* Ganti warna teks default di section ini jadi putih */
 }
 
-.attribution a {
-    color: var(--text-primary);
-    text-decoration: underline;
+/* Lapisan overlay gelap */
+#tim::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Warna hitam dengan 60% transparansi */
+    z-index: 1; /* Posisikan overlay di bawah konten */
+}
+
+/* Pastikan konten berada di atas overlay */
+#tim > * {
+    position: relative;
+    z-index: 2;
+}
+
+#tim h2 {
+    color: white;
+}
+.team-container {
+    text-align: center;
+}
+
+.team-names-list {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.team-member {
+    padding: 1rem;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.team-member h3 {
+    font-size: 2.5rem;
+    margin: 0;
+    font-weight: 600;
+}
+
+.team-member p {
+    margin: 0;
+    font-size: 1rem;
+    color: #ccc;
+}
+
+/* INI KUNCI INTERAKSINYA */
+.team-names-list:hover .team-member {
+    opacity: 0.5; /* Redupkan semua nama saat list di-hover */
+}
+.team-names-list .team-member:hover {
+    opacity: 1; /* Terangkan kembali nama yang sedang di-hover */
+    transform: scale(1.05); /* Sedikit perbesar */
+}
+
+/* --- GAYA BAGIAN FILOSOFI --- */
+#filosofi {
+    background-color: #e9ecef00; /* Beri sedikit warna latar belakang pada section */
+}
+
+.philosophy-card {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    min-height: 700px;
+    background-color: #e4e4e4; /* Warna kartu gelap */
+    color: rgb(0, 0, 0);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+}
+
+.philosophy-nav {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    padding: 20px 10px;
+    border-right: 1px solid #000000;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+    opacity: 0.6;
+}
+.nav-item:hover {
+    background-color: #acb1b6;
+    opacity: 1;
+}
+.nav-item.active {
+    background-color: #bdddff; /* Warna biru untuk item aktif */
+    opacity: 1;
+}
+.nav-item svg {
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.philosophy-content {
+    padding: 30px;
+    width: 100%;
+}
+
+.content-panel {
+    display: none; /* Sembunyikan semua panel secara default */
+    animation: fadeIn 0.5s ease;
+}
+.content-panel.active {
+    display: block; /* Tampilkan panel yang aktif */
+}
+.content-panel img {
+    width: 100%;
+    height: auto; /* Biarkan tinggi diatur otomatis */
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+.content-panel h3 {
+    font-size: 1.8rem;
+    margin-top: 0;
+}
+.content-panel p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #000000;
+}
+
+/* Animasi Fade-in untuk konten */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* --- GAYA UNTUK GALERI KOLEKSI 3D --- */
+.collection-carousel {
+    display: flex;
+    gap: 20px;
+    padding: 20px 5px; /* Beri sedikit padding vertikal */
+    overflow-x: auto;
+
+    /* TAMBAHKAN INI untuk 'snap' scrolling */
+    scroll-snap-type: x mandatory;
+}
+
+/* Tambahkan aturan baru ini di bawahnya */
+.collection-card {
+    flex: 0 0 220px; /* Lebar kartu kita perbesar dari 220px */
+    height: auto;
+    perspective: 1000px;
+    cursor: pointer;
+
+    /* TAMBAHKAN INI untuk 'snap' scrolling */
+    scroll-snap-align: center;
+}
+.collection-carousel::-webkit-scrollbar { height: 8px; }
+.collection-carousel::-webkit-scrollbar-track { background: #343a40; }
+.collection-carousel::-webkit-scrollbar-thumb { background-color: #007bff; border-radius: 10px; }
+
+.collection-card {
+    flex: 0 0 290px; /* Lebar kartu */
+    height: 500px;
+    perspective: 1000px; /* Kunci untuk efek 3D */
+    cursor: pointer;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+/* Kelas ini akan ditambahkan oleh JavaScript untuk membalik kartu */
+.collection-card.is-flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Sembunyikan sisi belakang */
+    backface-visibility: hidden;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.card-front {
+    background-size: cover;
+    background-position: center;
+    padding: 15px;
+}
+.card-front h4 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+}
+
+.card-back {
+    background-color: #dddddd;
+    transform: rotateY(180deg);
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.card-back p {
+    flex-grow: 1; /* Biarkan paragraf mengambil ruang ekstra */
+    font-size: 0.9rem;
+    color: #ced4da;
+}
+.card-back h5 { margin: 0; font-size: 1.2rem; }
+.card-back p { font-size: 0.9rem; color: #000000; }
+.card-back a {
+    margin-top: 15px;
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 0.8rem;
+}
+/* --- GAYA UNTUK MODAL POP-UP --- */
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000; /* Pastikan di atas segalanya */
+
+    /* Sembunyikan secara default */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.modal-container.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+    text-align: center;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+.modal-container.is-visible .modal-content {
+    transform: scale(1);
+}
+.modal-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+}
+.modal-img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+/* bagian KONTAK */
+#kontak {
+    background-color: #1c1e2167; /* Background gelap untuk footer */
+    color: #f0f2f5; /* Teks terang */
+    border-bottom: none; /* Hapus garis batas di bagian paling akhir */
+}
+
+#kontak .footer-content {
+    text-align: center;
+}
+
+#kontak h2 {
+    font-size: 2rem;
+    color: white; /* Pastikan judul terlihat jelas */
+    margin-bottom: 0.5rem;
+}
+
+#kontak p {
+    color: var(--text-secondary);
+    max-width: 500px;
+    margin-bottom: 2rem;
+}
+
+.social-links {
+    margin-bottom: 2rem;
+}
+
+.social-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #aaa;
+}
+
+.footer-bottom .copyright {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.footer-bottom .attribution {
+    font-size: 0.8rem;
+    color: #606770;
+}
+
+.footer-bottom .attribution a {
+    color: #90949c;
 }
 
 /* --- GAYA UNTUK TOMBOL JELAJAHI --- */
@@ -92,6 +433,33 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
 
 /* --- ATURAN RESPONSIVE (MOBILE) - FINAL --- */
 @media (max-width: 768px) {
+    /* --- PERBAIKAN RESPONSIVE UNTUK KARTU FILOSOFI --- */
+    .philosophy-card {
+        flex-direction: column; /* Ubah tata letak jadi vertikal */
+        min-height: auto; /* Biarkan tingginya menyesuaikan konten */
+        max-width: 95%; /* Batasi lebar di layar kecil */
+    }
+
+    .philosophy-nav {
+        flex-direction: row; /* Buat navigasi jadi horizontal */
+        overflow-x: auto; /* Buat navigasi bisa digeser jika tidak muat */
+        border-right: none; /* Hapus garis batas kanan */
+        border-bottom: 1px solid #495057; /* Pindahkan garis batas ke bawah */
+    }
+    
+    .nav-item {
+        flex: 1; /* Biarkan setiap item mengambil ruang yang sama */
+        justify-content: center; /* Pusatkan ikon dan teks */
+    }
+
+    .nav-item span {
+        display: none; /* Sembunyikan teks di navigasi agar lebih ringkas */
+    }
+
+    .philosophy-content {
+        padding: 20px; /* Kurangi padding di mobile */
+    }
+    /* ---------------------------------------------------- */
     /* Tampilkan Tombol Hamburger */
     .hamburger-menu {
         display: block;

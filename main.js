@@ -32,6 +32,74 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error("Elemen untuk hamburger atau nav-links tidak ditemukan!");
     }
 
+    // --- LOGIKA UNTUK KARTU FILOSOFI ---
+    const navItems = document.querySelectorAll('.nav-item');
+    const contentPanels = document.querySelectorAll('.content-panel');
+
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            // Hapus kelas 'active' dari semua item dan panel
+            navItems.forEach(nav => nav.classList.remove('active'));
+            contentPanels.forEach(panel => panel.classList.remove('active'));
+
+            // Tambahkan kelas 'active' ke item yang diklik
+            item.classList.add('active');
+
+            // Tampilkan panel konten yang sesuai
+            const targetPanelId = item.getAttribute('data-target');
+            const targetPanel = document.getElementById(targetPanelId);
+            if(targetPanel) {
+                targetPanel.classList.add('active');
+            }
+        });
+    });
+    // --- LOGIKA UNTUK KARTU KOLEKSI 3D ---
+    const collectionCards = document.querySelectorAll('.collection-card');
+
+    collectionCards.forEach(card => {
+        card.addEventListener('click', () => {
+            // Balik kartu yang diklik
+            card.classList.toggle('is-flipped');
+        });
+    });
+    // --- LOGIKA UNTUK MODAL POP-UP ---
+const modalContainer = document.getElementById('collection-modal');
+if (modalContainer) {
+    const modalImg = modalContainer.querySelector('.modal-img');
+    const modalTitle = modalContainer.querySelector('.modal-title');
+    const modalDescription = modalContainer.querySelector('.modal-description');
+    const closeModalBtn = modalContainer.querySelector('.modal-close-btn');
+
+    // Fungsi untuk membuka modal
+    const openModal = (cardBack) => {
+        modalTitle.textContent = cardBack.dataset.title;
+        modalDescription.textContent = cardBack.dataset.description;
+        modalImg.src = cardBack.dataset.imgSrc;
+        modalContainer.classList.add('is-visible');
+    };
+
+    // Fungsi untuk menutup modal
+    const closeModal = () => {
+        modalContainer.classList.remove('is-visible');
+    };
+
+    // Tambahkan event listener ke semua tombol 'Lihat Detail'
+    document.querySelectorAll('.card-back a').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault(); // Mencegah link berpindah halaman
+            const cardBack = e.target.closest('.card-back');
+            openModal(cardBack);
+        });
+    });
+
+    // Event listener untuk tombol close dan klik di luar modal
+    closeModalBtn.addEventListener('click', closeModal);
+    modalContainer.addEventListener('click', (e) => {
+        if (e.target === modalContainer) { // Hanya tutup jika klik di area overlay
+            closeModal();
+        }
+    });
+}
 });
 
 // --- FASE 2: LOGIKA 3D (BERJALAN SECARA INDEPENDEN) ---
@@ -123,6 +191,7 @@ if (renderer.domElement) {
 
     animate();
     console.log("Skrip 3D berhasil dijalankan dan loop animasi dimulai.");
-} else {
-    console.error("Elemen canvas #bg-canvas tidak ditemukan!");
-}
+    } else {
+        console.error("Elemen canvas #bg-canvas tidak ditemukan!");
+    }
+
