@@ -27,18 +27,23 @@ scene.add(directionalLight);
 const loader = new GLTFLoader();
 let customModel;
 
-console.log("Memulai proses memuat model 3D...");
+console.log("Memulai proses memuat model 3D baru...");
 loader.load(
-    'https://models.poly.pizza/s/Z92T2w9wgr/bYEDgGqXn2.glb',
+    // URL BARU: Model 'Abstract Core' dari Poly Pizza (Lisensi CC0)
+    'https://models.poly.pizza/s/r3P5H4Nn/b3D0nENF.glb',
+    
+    // Fungsi callback (tetap sama)
     function (gltf) {
         console.log("Model BERHASIL dimuat.", gltf);
         customModel = gltf.scene;
-        customModel.scale.set(1.5, 1.5, 1.5);
+        // Kita sesuaikan skala & posisi untuk model baru ini
+        customModel.scale.set(8, 8, 8); 
+        customModel.position.y = -1; // Sedikit ke bawah agar pas di tengah
         scene.add(customModel);
     },
-    undefined, // Kita abaikan progress log untuk sekarang
+    undefined,
     function (error) {
-        console.error('GAGAL memuat model 3D:', error); // Ini pesan error penting!
+        console.error('GAGAL memuat model 3D:', error);
     }
 );
 
@@ -70,20 +75,21 @@ animate();
 
 // --- BAGIAN 2: LOGIKA UI (HAMBURGER) ---
 const hamburgerBtn = document.querySelector('.hamburger-menu');
-const navLinksList = document.querySelector('.nav-links'); // Menggunakan nama variabel yg lebih jelas
+const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+const bodyEl = document.body;
 
-if (hamburgerBtn && navLinksList) {
+if (hamburgerBtn && mobileNavOverlay) {
     hamburgerBtn.addEventListener('click', () => {
         hamburgerBtn.classList.toggle('is-active');
-        navLinksList.classList.toggle('is-open');
+        mobileNavOverlay.classList.toggle('is-open');
+        bodyEl.classList.toggle('menu-is-open');
     });
 
-    navLinksList.querySelectorAll('a').forEach(link => {
+    mobileNavOverlay.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             hamburgerBtn.classList.remove('is-active');
-            navLinksList.classList.remove('is-open');
+            mobileNavOverlay.classList.remove('is-open');
+            bodyEl.classList.remove('menu-is-open');
         });
     });
-} else {
-    console.error("Elemen hamburger atau nav-links tidak ditemukan!");
 }
