@@ -1,6 +1,12 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
+//Pastikan DOM sepenuhnya dimuat sebelum menjalankan Splitting.js
+document.addEventListener('DOMContentLoaded', () => {
+    const targets = document.querySelectorAll('[data-splitting]');
+    Splitting({ target: targets });
+});
+// -------------------------
 // --- BAGIAN 1: LOGIKA 3D ---
 console.log("Memulai skrip 3D...");
 
@@ -75,21 +81,26 @@ animate();
 
 // --- BAGIAN 2: LOGIKA UI (HAMBURGER) ---
 const hamburgerBtn = document.querySelector('.hamburger-menu');
-const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+const navLinksList = document.querySelector('.nav-links'); // Kembali menargetkan .nav-links
 const bodyEl = document.body;
 
-if (hamburgerBtn && mobileNavOverlay) {
+if (hamburgerBtn && navLinksList) {
     hamburgerBtn.addEventListener('click', () => {
         hamburgerBtn.classList.toggle('is-active');
-        mobileNavOverlay.classList.toggle('is-open');
+        navLinksList.classList.toggle('is-open'); // Terapkan kelas 'is-open' langsung ke <ul>
         bodyEl.classList.toggle('menu-is-open');
     });
 
-    mobileNavOverlay.querySelectorAll('a').forEach(link => {
+    // Tutup menu saat link di dalam overlay diklik
+    navLinksList.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
-            hamburgerBtn.classList.remove('is-active');
-            mobileNavOverlay.classList.remove('is-open');
-            bodyEl.classList.remove('menu-is-open');
+            if (navLinksList.classList.contains('is-open')) { // Hanya tutup jika menu mobile terbuka
+                hamburgerBtn.classList.remove('is-active');
+                navLinksList.classList.remove('is-open');
+                bodyEl.classList.remove('menu-is-open');
+            }
         });
     });
+} else {
+    console.error("Elemen hamburger atau nav-links tidak ditemukan!");
 }

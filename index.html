@@ -4,61 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VISUAL CORE | Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+VN+Guides&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
     <header class="main-header">
         <nav class="main-nav">
             <a href="#hero" class="nav-logo">VISUAL CORE</a>
+            
+            <ul class="nav-links">
+                <li><a href="#tim">Tim</a></li>
+                <li><a href="#filosofi">Filosofi</a></li>
+                <li><a href="#galeri">Galeri</a></li>
+                <li><a href="#video">Video</a></li>
+                <li><a href="#proses">Proses</a></li>
+                <li><a href="#kontak">Kontak</a></li>
+            </ul>
+
             <button class="hamburger-menu" aria-label="Buka Menu">
-            <span class="line"></span>
-            <span class="line"></span>
-            <span class="line"></span>
-        </button>
+                <span class="line"></span>
+                <span class="line"></span>
+                <span class="line"></span>
+            </button>
         </nav>
     </header>
-        <div class="mobile-nav-overlay">
-        <ul class="nav-links">
-            <li><a href="#tim">Tim</a></li>
-            <li><a href="#filosofi">Filosofi</a></li>
-            <li><a href="#galeri">Galeri</a></li>
-            <li><a href="#video">Video</a></li>
-            <li><a href="#proses">Proses</a></li>
-            <li><a href="#kontak">Kontak</a></li>
-        </ul>
-    </div>
+
     <main>
         <section id="hero">
             <canvas id="bg-canvas"></canvas>
             <div class="content">
-                <h1>VISUAL CORE</h1>
+                <h1 data-splitting><span class="font-visual">Lagaligo</span>
+                <span class="font-core">MUSEUM</span></h1>
                 <p>An interactive digital experience.</p>
             </div>
         </section>
 
-        <section id="tim">
-            <h2>Tim Kreator</h2>
-        </section>
-
-        <section id="filosofi">
-            <h2>Filosofi Proyek</h2>
-        </section>
-
-        <section id="galeri">
-            <h2>Galeri Digital</h2>
-        </section>
-
-        <section id="video">
-            <h2>Dokumentasi Video</h2>
-        </section>
-
-        <section id="proses">
-            <h2>Proses Kreasi</h2>
-        </section>
-
-        <section id="kontak">
-            <h2>Kontak</h2>
-        </section>
+        <section id="tim"><h2>Tim Kreator</h2></section>
+        <section id="filosofi"><h2>Filosofi Proyek</h2></section>
+        <section id="galeri"><h2>Galeri Digital</h2></section>
+        <section id="video"><h2>Dokumentasi Video</h2></section>
+        <section id="proses"><h2>Proses Kreasi</h2></section>
+        <section id="kontak"><h2>Kontak</h2></section>
     </main>
     
     <script type="importmap">
@@ -69,6 +57,7 @@
         }
     }
     </script>
+    <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
     <script type="module" src="main.js"></script>
 </body>
 </html>
