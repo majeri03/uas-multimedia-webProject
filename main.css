@@ -35,9 +35,9 @@ section:last-child { border-bottom: none; }
 section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
 #hero { padding: 0; border: none; }
 #bg-canvas { position: fixed; top: 0; left: 0; outline: none; z-index: -1; }
-.content { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; text-align: center; padding: 0 20px; visibility: hidden;}
-.content h1 { font-size: clamp(3rem, 10vw, 7rem); font-weight: 800; letter-spacing: -2px; margin: 0; background: linear-gradient(90deg, #3d3d3d, #000000); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-.content p { font-size: clamp(1rem, 3vw, 1.25rem); font-weight: 400; margin-top: 0.5rem; color: var(--text-secondary); }
+.content { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; text-align: center; padding: 0 20px;}
+.content h1 { font-size: clamp(5rem, 14vw, 10rem); font-weight: 900; letter-spacing: -2px; margin: 0; background: linear-gradient(90deg, #3d3d3d, #000000); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.content p { font-size: clamp(1rem, 3vw, 1.25rem);  font-weight: 400; margin-top: 2rem;; color: var(--text-secondary); }
 .content h1 .font-visual {
     font-family: 'Playwrite VN Guides', cursive;
     font-weight: 300; /* Font ini lebih bagus saat tidak terlalu tebal */
@@ -50,26 +50,44 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
     margin-left: 0.2em; /* Beri sedikit jarak dari kata 'VISUAL' */
 }
 
-/* --- ANIMASI TEKS HERO (VERSI DIPERBAIKI) --- */
 
-/* Targetkan .char hanya jika elemen induknya sudah diproses oleh Splitting.js
-  (ditandai dengan adanya kelas .splitting) 
-*/
-.splitting .char {
-    visibility: visible; /* Penting: Tampilkan kembali agar bisa dianimasikan */
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(40px);
-    animation: slide-up-char 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-    animation-delay: calc(var(--char-index) * 0.04s);
+.attribution {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-align: center;
+    margin-top: 50px;
 }
 
-/* Definisikan keyframes untuk animasinya */
-@keyframes slide-up-char {
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+.attribution a {
+    color: var(--text-primary);
+    text-decoration: underline;
+}
+
+/* --- GAYA UNTUK TOMBOL JELAJAHI --- */
+.btn-explore {
+    /* Tampilan & Warna */
+    background-color: black;
+    color: white;
+    border: 2px solid black;
+
+    /* Spasi & Ukuran */
+    margin-top: 2rem; /* Jarak dari teks di atasnya */
+    padding: 12px 30px;
+
+    /* Tipografi & Lainnya */
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none; /* Hapus garis bawah dari link */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 5px; /* Sedikit lengkungan di sudut */
+    transition: all 0.3s ease; /* Transisi untuk efek hover */
+}
+
+/* Efek saat kursor mouse di atas tombol */
+.btn-explore:hover {
+    background-color: transparent; /* Background jadi transparan */
+    color: black; /* Tulisan jadi hitam */
 }
 
 /* --- ATURAN RESPONSIVE (MOBILE) - FINAL --- */
