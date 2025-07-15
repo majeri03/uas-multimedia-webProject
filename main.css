@@ -431,6 +431,243 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
     color: black; /* Tulisan jadi hitam */
 }
 
+/* --- Gaya Dasar Section --- */
+.unique-hero-section {
+    font-family: 'Poppins', sans-serif; /* Anda bisa ganti font sesuai keinginan */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 20px;
+    background-color: #ffffff;
+    text-align: center;
+    overflow: hidden;
+}
+
+.unique-hero-container {
+    max-width: 1100px;
+    width: 100%;
+}
+
+/* --- Konten Utama --- */
+.unique-hero-content {
+    max-width: 750px;
+    margin: 0 auto 60px auto;
+}
+
+.unique-hero-headline {
+    font-size: 3.5rem; /* Ukuran font besar untuk judul */
+    font-weight: 800;
+    color: #000000;
+    margin: 0;
+    line-height: 1.2;
+    position: relative;
+    display: inline-block; /* Agar posisi relatif bekerja dengan baik */
+}
+
+.unique-apostrophe {
+    position: absolute;
+    top: -0.2em;
+    right: -0.4em;
+    font-size: 4rem;
+    font-weight: 900;
+}
+
+.unique-hero-subtext {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 20px 0 30px 0;
+}
+
+.unique-hero-cta-btn {
+    background-color: #222;
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.unique-hero-cta-btn:hover {
+    background-color: #444;
+    transform: translateY(-2px);
+}
+
+/* --- Bagian Statistik --- */
+.unique-hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 80px; /* Jarak antar item statistik */
+    flex-wrap: wrap; /* Agar bisa turun ke bawah jika tidak muat */
+}
+
+.unique-stat-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Garis Pemisah Vertikal */
+.unique-stat-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: -40px; /* Setengah dari gap */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 50px;
+    background-color: #ddd;
+}
+
+.unique-stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #000;
+}
+
+.unique-stat-label {
+    font-size: 1rem;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* amasing ROOM*/
+/* --- Gaya Dasar Section --- */
+.amazing-room-section {
+    font-family: 'Poppins', sans-serif; /* Ganti font sesuai kebutuhan */
+    position: relative; /* Penting untuk posisi ornamen lingkaran */
+    background-color: #fff;
+    padding: 80px 0;
+    overflow: hidden; /* Mencegah ornamen keluar dari section */
+}
+
+.amazing-room-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 25px;
+    position: relative; /* Agar z-index konten lebih tinggi dari ornamen */
+    z-index: 2;
+}
+
+/* --- Judul dan Gambar Sofa --- */
+.amazing-headline-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; /* Agar bisa turun di mobile */
+    gap: 20px;
+}
+
+.amazing-headline-text {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #222;
+    margin: 0;
+}
+
+.amazing-sofa-img-container img {
+    max-width: 220px;
+    border-radius: 40px;
+    vertical-align: middle; /* Menghindari spasi aneh di bawah gambar */
+}
+
+/* --- Konten Tengah --- */
+.amazing-content-wrapper {
+    text-align: center;
+}
+
+.amazing-divider {
+    border: 0;
+    height: 1px;
+    background-color: #e0e0e0;
+    width: 100%;
+    margin: 30px 0;
+}
+
+.amazing-paragraph {
+    max-width: 750px;
+    margin: 0 auto 30px auto;
+    color: #555;
+    line-height: 1.7;
+}
+
+/* --- Tombol Aksi --- */
+.amazing-buttons-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.unique-btn {
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.unique-btn-primary {
+    background-color: #222;
+    color: #fff;
+    border: 1px solid #222;
+}
+
+.unique-btn-primary:hover {
+    background-color: #444;
+    transform: translateY(-2px);
+}
+
+.unique-btn-secondary {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.unique-btn-secondary:hover {
+    background-color: #f5f5f5;
+    border-color: #999;
+    transform: translateY(-2px);
+}
+
+/* --- Gambar Utama --- */
+.amazing-main-image-wrapper {
+    margin-top: 50px;
+}
+
+.amazing-main-image-wrapper img {
+    width: 100%;
+    border-radius: 35px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Ornamen Lingkaran --- */
+.deco-circle {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.deco-circle.circle-1 { top: 10%; left: 12%; }
+.deco-circle.circle-2 { top: 20%; right: 10%; }
+.deco-circle.circle-3 { top: 45%; left: 5%; }
+.deco-circle.circle-4 { top: 48%; right: 20%; }
+.deco-circle.circle-5 { top: 5%; right: 40%; }
+.deco-circle.circle-6 { top: 55%; left: 25%; }
+
+
 /* --- ATURAN RESPONSIVE (MOBILE) - FINAL --- */
 @media (max-width: 768px) {
     /* --- PERBAIKAN RESPONSIVE UNTUK KARTU FILOSOFI --- */
@@ -519,4 +756,50 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
     .hamburger-menu.is-active .line:nth-child(1) { transform: translateY(8px) rotate(45deg); }
     .hamburger-menu.is-active .line:nth-child(2) { opacity: 0; }
     .hamburger-menu.is-active .line:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    .unique-hero-headline {
+        font-size: 2.5rem; /* Ukuran font judul lebih kecil di mobile */
+    }
+
+    .unique-apostrophe {
+        font-size: 3rem;
+    }
+
+    .unique-hero-stats {
+        flex-direction: column; /* Mengubah susunan menjadi vertikal */
+        gap: 40px; /* Mengurangi jarak di mobile */
+    }
+
+    /* Hilangkan garis pemisah di mobile */
+    .unique-stat-item:not(:last-child)::after {
+        display: none;
+    }
+    .amazing-room-section {
+        padding: 60px 0;
+    }
+
+    .amazing-headline-text {
+        font-size: 2rem; /* Ukuran judul lebih kecil */
+        width: 100%; /* Membuat teks memenuhi lebar */
+        text-align: center;
+    }
+
+    .amazing-headline-wrapper {
+        gap: 15px;
+    }
+    
+    /* Atur urutan agar gambar sofa di tengah */
+    .amazing-headline-text:last-of-type {
+        order: 3;
+    }
+    .amazing-sofa-img-container {
+        order: 2;
+    }
+
+    /* Sembunyikan beberapa ornamen di mobile agar tidak ramai */
+    .deco-circle.circle-3,
+    .deco-circle.circle-4,
+    .deco-circle.circle-6 {
+        display: none;
+    }
 }

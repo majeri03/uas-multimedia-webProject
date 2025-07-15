@@ -63,43 +63,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     // --- LOGIKA UNTUK MODAL POP-UP ---
-const modalContainer = document.getElementById('collection-modal');
-if (modalContainer) {
-    const modalImg = modalContainer.querySelector('.modal-img');
-    const modalTitle = modalContainer.querySelector('.modal-title');
-    const modalDescription = modalContainer.querySelector('.modal-description');
-    const closeModalBtn = modalContainer.querySelector('.modal-close-btn');
+    const modalContainer = document.getElementById('collection-modal');
+    if (modalContainer) {
+        const modalImg = modalContainer.querySelector('.modal-img');
+        const modalTitle = modalContainer.querySelector('.modal-title');
+        const modalDescription = modalContainer.querySelector('.modal-description');
+        const closeModalBtn = modalContainer.querySelector('.modal-close-btn');
 
-    // Fungsi untuk membuka modal
-    const openModal = (cardBack) => {
-        modalTitle.textContent = cardBack.dataset.title;
-        modalDescription.textContent = cardBack.dataset.description;
-        modalImg.src = cardBack.dataset.imgSrc;
-        modalContainer.classList.add('is-visible');
-    };
+        // Fungsi untuk membuka modal
+        const openModal = (cardBack) => {
+            modalTitle.textContent = cardBack.dataset.title;
+            modalDescription.textContent = cardBack.dataset.description;
+            modalImg.src = cardBack.dataset.imgSrc;
+            modalContainer.classList.add('is-visible');
+        };
 
-    // Fungsi untuk menutup modal
-    const closeModal = () => {
-        modalContainer.classList.remove('is-visible');
-    };
+        // Fungsi untuk menutup modal
+        const closeModal = () => {
+            modalContainer.classList.remove('is-visible');
+        };
 
-    // Tambahkan event listener ke semua tombol 'Lihat Detail'
-    document.querySelectorAll('.card-back a').forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault(); // Mencegah link berpindah halaman
-            const cardBack = e.target.closest('.card-back');
-            openModal(cardBack);
+        // Tambahkan event listener ke semua tombol 'Lihat Detail'
+        document.querySelectorAll('.card-back a').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault(); // Mencegah link berpindah halaman
+                const cardBack = e.target.closest('.card-back');
+                openModal(cardBack);
+            });
         });
-    });
 
-    // Event listener untuk tombol close dan klik di luar modal
-    closeModalBtn.addEventListener('click', closeModal);
-    modalContainer.addEventListener('click', (e) => {
-        if (e.target === modalContainer) { // Hanya tutup jika klik di area overlay
-            closeModal();
-        }
-    });
-}
+        // Event listener untuk tombol close dan klik di luar modal
+        closeModalBtn.addEventListener('click', closeModal);
+        modalContainer.addEventListener('click', (e) => {
+            if (e.target === modalContainer) { // Hanya tutup jika klik di area overlay
+                closeModal();
+            }
+        });
+    }
+    
 });
 
 // --- FASE 2: LOGIKA 3D (BERJALAN SECARA INDEPENDEN) ---
@@ -148,8 +149,8 @@ if (renderer.domElement) {
                 if (child.isMesh) {
                     child.material.color.set(0xffffff); // putih
                     if (child.material.emissive) {
-                        child.material.emissive.set(0xffffff); // nyala putih
-                        child.material.emissiveIntensity = 3;  // sangat terang
+                        child.material.emissive.set(0x000000); // nyala putih
+                        child.material.emissiveIntensity = 1;  // sangat terang
                     }
                     child.material.needsUpdate = true;
                 }
