@@ -101,6 +101,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
+    const ticketPriceElement = document.getElementById('ticket-price-value');
+    const ticketContainer = document.querySelector('.ticket-price-interactive');
+
+    if (ticketPriceElement && ticketContainer) {
+        const originalPrice = "5.000";
+        const prices = ["1.000", "2.000", "3.000", "4.000", "5.000"];
+        let priceInterval;
+
+        // Saat mouse masuk ke area harga
+        ticketContainer.addEventListener('mouseenter', () => {
+            let i = 0;
+            priceInterval = setInterval(() => {
+                ticketPriceElement.textContent = prices[i];
+                i = (i + 1) % prices.length;
+            }, 150); // Ganti angka setiap 150ms
+        });
+
+        // Saat mouse keluar, kembalikan ke harga asli
+        ticketContainer.addEventListener('mouseleave', () => {
+            clearInterval(priceInterval);
+            ticketPriceElement.textContent = originalPrice;
+        });
+    }
 });
 
 // --- FASE 2: LOGIKA 3D (BERJALAN SECARA INDEPENDEN) ---

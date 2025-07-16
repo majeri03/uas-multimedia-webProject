@@ -30,13 +30,25 @@ body.menu-is-open {
 .hamburger-menu { display: none; } /* Sembunyikan hamburger di desktop */
 
 /* --- KONTEN HALAMAN --- */
-section { min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: calc(var(--header-height) + 40px) 20px 40px; border-bottom: 1px solid #ddd; }
+section { min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: calc(var(--header-height) + 40px) 20px 40px; border-bottom: 1px solid #ddd; position: relative; /* Tambahkan ini agar elemen anak bisa diposisikan relatif terhadap section */
+    overflow: hidden; }
 section:last-child { border-bottom: none; }
 section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
-#hero { padding: 0; border: none; }
+#hero {
+    padding: 0;
+    border: none;
+    min-height: 100vh;
+    display: flex; /* Pastikan hero section adalah flex container */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh; /* Gunakan min-height */
+}
 #bg-canvas { position: fixed; top: 0; left: 0; outline: none; z-index: -1; }
-.content { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; text-align: center; padding: 0 20px;}
-.content h1 { font-size: clamp(5rem, 14vw, 10rem); font-weight: 900; letter-spacing: -2px; margin: 0; background: linear-gradient(90deg, #3d3d3d, #000000); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.content { display: flex; flex-direction: column; justify-content: center; align-items: center;  text-align: center; padding: 0 20px; max-width: 90%; /* Batasi lebar agar tidak terlalu mepet di mobile */
+    position: relative; /* Pastikan konten berada di atas canvas */
+    z-index: 1;}
+.content h1 { font-size: clamp(5rem, 9vw, 10rem); font-weight: 900; letter-spacing: -2px; margin: 0; background: linear-gradient(90deg, #3d3d3d, #000000); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .content p { font-size: clamp(1rem, 3vw, 1.25rem);  font-weight: 400; margin-top: 2rem;; color: var(--text-secondary); }
 .content h1 .font-visual {
     font-family: 'Playwrite VN Guides', cursive;
@@ -667,6 +679,169 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
 .deco-circle.circle-5 { top: 5%; right: 40%; }
 .deco-circle.circle-6 { top: 55%; left: 25%; }
 
+/* --- GAYA SECTION LOKASI (VERSI PERBAIKAN FINAL) --- */
+.location-section {
+    background-color: #ffffff;
+    padding: 80px 20px;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.location-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 50px;
+    align-items: center;
+}
+
+/* Kolom Peta (Kiri) */
+.location-map {
+    flex: 1;
+    min-width: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+.location-map iframe {
+    width: 100%;
+    height: 500px;
+    display: block;
+}
+
+/* Kolom Info (Kanan) */
+.location-info {
+    flex: 1;
+}
+
+.location-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #222;
+    margin-top: 0;
+    margin-bottom: 2.5rem;
+}
+
+/* Garis Infografis / Timeline */
+.location-timeline {
+    position: relative;
+    /* DIUBAH: Beri padding lebih besar agar tidak mepet */
+    padding-left: 50px; 
+    border-left: 2px solid #e0e0e0;
+}
+
+.info-group {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    padding-bottom: 2.5rem;
+}
+
+.info-group:last-child {
+    padding-bottom: 0;
+}
+
+/* Lingkaran pada Garis Timeline */
+.info-group::before {
+    content: '';
+    position: absolute;
+    /* DIUBAH: Disesuaikan dengan padding baru */
+    left: -60px; 
+    top: 5px;
+    width: 18px;
+    height: 18px;
+    background-color: white;
+    border: 3px solid #007bff;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+/* Ikon pada Timeline */
+.info-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    /* DIUBAH: Disesuaikan agar pas di tengah lingkaran */
+    left: -51px; 
+    top: 14px;
+    transform: translateX(-50%); /* Hanya geser horizontal */
+    color: #007bff;
+}
+
+.info-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Konten di dalam setiap item timeline */
+.info-content {
+    /* DIUBAH: Beri jarak dari garis timeline */
+    padding-left: 15px; 
+}
+
+.info-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #343a40;
+    margin: 0 0 4px 0;
+}
+
+.info-detail {
+    font-size: 1.1rem;
+    color: #555;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.info-detail.info-closed {
+    color: #d9534f;
+    font-weight: 500;
+}
+
+/* Tombol Aksi */
+.location-cta-btn {
+    display: inline-block;
+    margin-top: 2.5rem;
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+    padding: 14px 32px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.location-cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+/* Gaya Harga Tiket */
+.ticket-price-interactive {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 15px 20px;
+    display: inline-flex;
+    align-items: baseline;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+    margin-top: 5px;
+}
+.ticket-price-interactive:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+}
+.ticket-currency { font-size: 1.2rem; font-weight: 600; color: #6c757d; margin-right: 5px; }
+.ticket-value { font-size: 2.5rem; font-weight: 800; color: #007bff; transition: color 0.3s ease; }
+.ticket-note { font-size: 1rem; color: #6c757d; margin-left: 8px; }
+
+
 
 /* --- ATURAN RESPONSIVE (MOBILE) - FINAL --- */
 @media (max-width: 768px) {
@@ -801,5 +976,42 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
     .deco-circle.circle-4,
     .deco-circle.circle-6 {
         display: none;
+    }
+
+    .location-container {
+        flex-direction: column;
+        gap: 40px;
+    }
+    .location-map iframe {
+        height: 400px;
+    }
+    .location-info {
+        width: 100%;
+        /* BARU: Pusatkan kontainer info di tablet */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .location-title {
+        text-align: center;
+    }
+    .location-title {
+        font-size: 2.2rem;
+    }
+    .location-map iframe {
+        height: 300px;
+    }
+    .location-timeline {
+      /* DIUBAH: Cara baru untuk memusatkan timeline */
+      display: inline-block;
+      text-align: left; /* Kembalikan text-align untuk konten di dalamnya */
+    }
+    .location-info {
+        /* BARU: Pastikan parent dari inline-block di-center */
+        text-align: center;
+    }
+    .location-cta-btn {
+      display: block;
+      text-align: center;
     }
 }
