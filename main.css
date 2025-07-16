@@ -450,7 +450,7 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
     justify-content: center;
     align-items: center;
     padding: 80px 20px;
-    background-color: #ffffff;
+    background-color: #ffffffd7;
     text-align: center;
     overflow: hidden;
 }
@@ -552,7 +552,7 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
 .amazing-room-section {
     font-family: 'Poppins', sans-serif; /* Ganti font sesuai kebutuhan */
     position: relative; /* Penting untuk posisi ornamen lingkaran */
-    background-color: #fff;
+    background-color: #ffffffdc;
     padding: 80px 0;
     overflow: hidden; /* Mencegah ornamen keluar dari section */
 }
@@ -727,15 +727,21 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
 /* Garis Infografis / Timeline */
 .location-timeline {
     position: relative;
-    /* DIUBAH: Beri padding lebih besar agar tidak mepet */
-    padding-left: 50px; 
-    border-left: 2px solid #e0e0e0;
 }
-
+.location-timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px; /* Atur posisi garis di sini */
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #cacaca;
+}
 .info-group {
     display: flex;
-    align-items: flex-start;
+    align-items: center; /* Ini akan berfungsi sekarang */
     position: relative;
+    gap: 20px; /* Jarak antara ikon dan teks */
     padding-bottom: 2.5rem;
 }
 
@@ -743,43 +749,39 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
     padding-bottom: 0;
 }
 
-/* Lingkaran pada Garis Timeline */
-.info-group::before {
-    content: '';
-    position: absolute;
-    /* DIUBAH: Disesuaikan dengan padding baru */
-    left: -60px; 
-    top: 5px;
-    width: 18px;
-    height: 18px;
-    background-color: white;
-    border: 3px solid #007bff;
-    border-radius: 50%;
-    z-index: 1;
+
+.info-icon-wrapper {
+    flex-shrink: 0;
+    width: 32px; /* Area untuk ikon, sesuaikan dengan left di atas */
+    display: flex;
+    justify-content: center;
 }
 
-/* Ikon pada Timeline */
+/* KODE BARU UNTUK IKON (TANPA POSITION ABSOLUTE) */
 .info-icon {
+    width: 32px;
+    height: 32px;
     display: flex;
+    background-color: #ffffff;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    /* DIUBAH: Disesuaikan agar pas di tengah lingkaran */
-    left: -51px; 
-    top: 14px;
-    transform: translateX(-50%); /* Hanya geser horizontal */
-    color: #007bff;
+    color: #5f2e2e;
+    z-index: 2;
 }
 
+
 .info-icon svg {
-    width: 24px;
+    width: 28px;
     height: 24px;
 }
 
 /* Konten di dalam setiap item timeline */
 .info-content {
-    /* DIUBAH: Beri jarak dari garis timeline */
-    padding-left: 15px; 
+    flex-grow: 1;
+    display: flex; /* Jadikan flex container */
+    flex-direction: column; /* Arahkan item ke bawah */
+    align-items: flex-start; /* PAKSA semua item rata kiri */
+    gap: 4px; /* Beri sedikit jarak antar item di dalamnya */
 }
 
 .info-label {
@@ -805,7 +807,7 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
 .location-cta-btn {
     display: inline-block;
     margin-top: 2.5rem;
-    background: linear-gradient(45deg, #007bff, #0056b3);
+    background: linear-gradient(45deg, #030303, #777777);
     color: white;
     padding: 14px 32px;
     border-radius: 10px;
@@ -831,17 +833,428 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
     cursor: pointer;
     transition: all 0.3s ease;
     user-select: none;
-    margin-top: 5px;
+    margin-top: 0;
 }
 .ticket-price-interactive:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
 }
 .ticket-currency { font-size: 1.2rem; font-weight: 600; color: #6c757d; margin-right: 5px; }
-.ticket-value { font-size: 2.5rem; font-weight: 800; color: #007bff; transition: color 0.3s ease; }
+.ticket-value { font-size: 2.5rem; font-weight: 800; color: #000000; transition: color 0.3s ease; }
 .ticket-note { font-size: 1rem; color: #6c757d; margin-left: 8px; }
 
+/* --- GAYA UNTUK PARALLAX SCROLLING --- */
 
+.parallax-section {
+    /* Tinggi section */
+    min-height: 70vh; 
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* KUNCI EFEK PARALLAX */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    border-bottom: none;
+}
+
+/* Lapisan overlay gelap agar teks mudah dibaca */
+.parallax-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); 
+}
+
+/* Konten di dalam section parallax */
+.parallax-content {
+    position: relative; /* Pastikan di atas overlay */
+    z-index: 2;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.parallax-content h2 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0;
+    color: white; /* Pastikan warna h2 di sini putih */
+}
+
+.parallax-content p {
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    font-weight: 300;
+}
+
+/* Mengatur gambar untuk setiap section */
+#parallax-satu {
+    background-image: url('https://tse1.mm.bing.net/th/id/OIP.3R93yPBo4qiQUxXRtrPz8QHaE8?pid=ImgDet&w=174&h=116&c=7&dpr=1,5&o=7&rm=3');
+}
+
+#parallax-dua {
+    background-image: url('https://tse2.mm.bing.net/th/id/OIP.Rj2AuzVWZGME_AQYJ7Z2twHaF4?w=663&h=527&rs=1&pid=ImgDetMain&o=7&rm=3');
+}
+#parallax-tiga {
+    background-image: url('https://tse1.mm.bing.net/th/id/OIP.3R93yPBo4qiQUxXRtrPz8QHaE8?pid=ImgDet&w=174&h=116&c=7&dpr=1,5&o=7&rm=3');
+}
+
+/* Section Info di antara parallax */
+.parallax-info-section {
+    padding: 80px 20px;
+    background-color: #ffffff; /* Warna putih atau terang */
+    text-align: center;
+    border-bottom: none;
+}
+
+.info-content {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.info-content h3 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.info-content p {
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+.info-btn {
+    background: none;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    padding: 10px 25px;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.info-btn:hover {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+}
+
+/* --- GAYA SECTION TESTIMONIALS --- */
+.testimonials-section {
+    padding: 80px 20px;
+    background-color: #f8f9fade;
+    font-family: 'Poppins', sans-serif;
+    border-bottom: none;
+}
+
+.testimonials-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header Section */
+.testimonials-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.header-subtitle {
+    color: #ffc107;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.header-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #212529;
+    margin: 10px 0;
+}
+
+/* Total Skor Review di Header */
+.total-reviews-summary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+.summary-score {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #343a40;
+}
+.summary-stars .star {
+    width: 22px;
+    height: 22px;
+}
+.summary-count {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.header-description {
+    color: #6c757d;
+    max-width: 600px;
+    margin: 15px auto 0;
+    line-height: 1.6;
+}
+
+/* Grid untuk kartu testimoni */
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+/* Kartu Testimoni */
+.testimonial-card {
+    background-color: #ffffff;
+    padding: 30px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Pusatkan konten secara horizontal */
+    position: relative; /* Untuk memposisikan profil relatif terhadap kartu */
+    padding-top: 60px; /* Beri ruang di atas untuk foto profil yang "mengintip" */
+}
+
+.testimonial-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Foto profil bulat */
+.card-profile {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    position: absolute; /* Jadikan posisinya absolut */
+    top: -40px; /* Tarik ke atas sebesar setengah tinggi + border */
+    left: 50%; /* Pusatkan secara horizontal */
+    transform: translateX(-50%); /* Koreksi pergeseran akibat left: 50% */
+    z-index: 10; /* Pastikan berada di atas konten kartu */
+}
+.card-profile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-author h4 { margin: 10px; font-size: 1.1rem; font-weight: 600; color: #343a40; }
+.card-author span { font-size: 0.85rem; color: #6c757d; }
+
+/* Rating Bintang */
+.card-rating {
+    margin: 15px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+.card-rating .stars {
+    display: flex;
+}
+.star {
+    width: 18px;
+    height: 18px;
+    color: #ffc107;
+}
+.card-rating .score {
+    font-weight: 600;
+    color: #343a40;
+}
+
+.card-text {
+    color: #6c757d;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin: 0;
+    flex-grow: 1; /* Biarkan teks mengambil sisa ruang */
+}
+
+/* --- TEAM SECTION STYLES --- */
+.team-section {
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fae8; /* Bottom background color */
+    display: block;
+}
+
+.team-top-content {
+    background-color: #ffffff; /* Top background color */
+    padding: 80px 20px;
+    background-image: url('https://images.unsplash.com/photo-1516534775068-ba3e7458af70');
+    background-size: 50% 100%;
+    background-repeat: no-repeat;
+    background-position: left center;
+}
+
+.team-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.content-right {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+}
+
+.team-headline {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #212529;
+    line-height: 1.3;
+}
+
+.team-description {
+    color: #6c757d;
+    margin: 20px 0;
+    line-height: 1.6;
+}
+
+.team-cta-button {
+    display: inline-block;
+    background-color: #ffc107;
+    color: #212529;
+    padding: 12px 28px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.team-cta-button:hover {
+    background-color: #e0a800;
+}
+
+.team-bottom-content {
+    padding: 80px 20px 60px;
+    position: relative;
+    margin-top: -60px; /* Pulls the carousel up into the top section */
+}
+
+.team-carousel-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.team-carousel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    transition: transform 0.5s ease-in-out;
+}
+
+.team-profile-card {
+    text-align: center;
+    flex: 0 0 200px; /* Base width for each card */
+    opacity: 0.6;
+    transform: scale(0.85);
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.team-profile-card.active {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 10px 40px rgba(255, 193, 7, 0.4); /* Glow effect */
+    border-radius: 50%; /* Make shadow circular */
+}
+
+.team-profile-card img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.profile-name {
+    font-weight: 600;
+    color: #343a40;
+    margin: 0;
+}
+
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.carousel-nav.prev { left: -20px; }
+.carousel-nav.next { right: -20px; }
+
+.team-bottom-title {
+    text-align: center;
+    margin-top: 60px;
+}
+
+.team-bottom-title h3 {
+    font-size: 2rem;
+    font-weight: 400;
+    color: #6c757d;
+}
+.team-bottom-title span {
+    color: #ffc107;
+    font-weight: 700;
+}
+
+
+
+@media (max-width: 992px) {
+    .testimonials-grid { grid-template-columns: 1fr 1fr; }
+    .team-top-content {
+        background-image: none; /* Hide background image on smaller screens */
+    }
+    .team-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .testimonials-grid { grid-template-columns: 1fr; gap: 60px;}
+    .header-title { font-size: 2rem; }
+    .team-profile-card {
+        flex: 0 0 150px;
+    }
+    .team-profile-card img {
+        width: 150px;
+        height: 150px;
+    }
+}
 
 /* --- ATURAN RESPONSIVE (MOBILE) - FINAL --- */
 @media (max-width: 768px) {
@@ -1013,5 +1426,21 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
     .location-cta-btn {
       display: block;
       text-align: center;
+    }
+
+    .parallax-section {
+        /* INI KUNCINYA: Mematikan efek parallax di mobile */
+        background-attachment: scroll;
+        
+        /* Sesuaikan tinggi section agar tidak terlalu makan tempat di mobile */
+        min-height: 50vh; 
+    }
+
+    .parallax-content h2 {
+        font-size: 2rem; /* Perkecil sedikit judul di mobile */
+    }
+
+    .parallax-content p {
+        font-size: 1rem; /* Perkecil sedikit paragraf */
     }
 }

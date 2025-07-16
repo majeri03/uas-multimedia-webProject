@@ -124,6 +124,75 @@ document.addEventListener('DOMContentLoaded', () => {
             ticketPriceElement.textContent = originalPrice;
         });
     }
+    // Fungsi untuk menggambar bintang
+    const createStars = (rating, container) => {
+        container.innerHTML = ''; // Kosongkan kontainer
+        const fullStars = Math.floor(rating);
+        const halfStar = rating % 1 >= 0.5;
+        const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+        // SVG untuk setiap jenis bintang
+        const starFullSVG = `<svg class="star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>`;
+        const starHalfSVG = `<svg class="star" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 5.173l2.335 4.817 5.305.732-3.861 3.71.942 5.27-4.721-2.524v-12.005zm0-4.586l-3.668 7.568-8.332 1.151 6.064 5.828-1.48 8.279 7.416-3.967 7.417 3.967 1.481-8.279-6.064-5.828-8.332-1.151z"/></svg>`;
+        const starEmptySVG = `<svg class="star" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>`;
+
+        for (let i = 0; i < fullStars; i++) container.innerHTML += starFullSVG;
+        if (halfStar) container.innerHTML += starHalfSVG;
+        for (let i = 0; i < emptyStars; i++) container.innerHTML += starEmptySVG;
+    };
+
+    // Terapkan ke setiap kartu testimoni
+    document.querySelectorAll('.card-rating').forEach(card => {
+        const rating = parseFloat(card.dataset.rating);
+        const starContainer = card.querySelector('.stars');
+        createStars(rating, starContainer);
+    });
+
+    // Terapkan ke ringkasan total di header
+    const summaryContainer = document.querySelector('.summary-stars');
+    if(summaryContainer) {
+        const summaryScore = parseFloat(document.querySelector('.summary-score').textContent);
+        createStars(summaryScore, summaryContainer);
+    }
+
+    const carousel = document.querySelector('.team-carousel');
+    const cards = document.querySelectorAll('.team-profile-card');
+    const prevButton = document.querySelector('.carousel-nav.prev');
+    const nextButton = document.querySelector('.carousel-nav.next');
+
+    if (carousel && cards.length > 0) {
+        let currentIndex = Math.floor(cards.length / 2); // Start with the middle card active
+        const cardWidth = cards[0].offsetWidth + 30; // card width + gap
+
+        function updateCarousel() {
+            // Center the active card
+            const offset = (carousel.offsetWidth / 2) - (cardWidth / 2);
+            carousel.style.transform = `translateX(${-currentIndex * cardWidth + offset}px)`;
+
+            // Update active class
+            cards.forEach((card, index) => {
+                if (index === currentIndex) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+        }
+
+        prevButton.addEventListener('click', () => {
+            currentIndex = (currentIndex > 0) ? currentIndex - 1 : cards.length - 1;
+            updateCarousel();
+        });
+
+        nextButton.addEventListener('click', () => {
+            currentIndex = (currentIndex < cards.length - 1) ? currentIndex + 1 : 0;
+            updateCarousel();
+        });
+
+        // Initial setup
+        updateCarousel();
+        window.addEventListener('resize', updateCarousel); // Adjust on window resize
+    }
 });
 
 // --- FASE 2: LOGIKA 3D (BERJALAN SECARA INDEPENDEN) ---
