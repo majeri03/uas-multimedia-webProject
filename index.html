@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playwrite+VN+Guides&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
     <header class="main-header">
@@ -250,7 +251,81 @@
                 </div>
             </div>
         </section>
-        <section id="galeri"><h2>Galeri Digital</h2></section>
+        <section id="galeri">
+            <h2 class="section-title">Galeri</h2>
+            <div class="options">
+                <div class="option active" style="--optionBackground:url(https://th.bing.com/th/id/OIP.7hB4vYH7Ivqr_4IHeIap5QHaEK?w=296&h=180&c=7&r=0&o=7&pid=1.7&rm=3)">
+                    <div class="shadow"></div>
+                    <div class="label">
+                        <div class="icon"><i class="fas fa-ship"></i></div>
+                        <div class="info">
+                            <div class="main">Perahu Pinisi</div>
+                            <div class="sub">Mahakarya maritim Nusantara.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="option" style="--optionBackground:url(https://images.unsplash.com/photo-1618331834723-1c4c01726a8c?q=80&w=1964)">
+                    <div class="shadow"></div>
+                    <div class="label">
+                        <div class="icon"><i class="fas fa-pen-alt"></i></div>
+                        <div class="info">
+                            <div class="main">Aksara Lontara</div>
+                            <div class="sub">Sistem tulisan kuno Bugis-Makassar.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="option" style="--optionBackground:url(https://images.unsplash.com/photo-1593323382761-4405355b4138?q=80&w=2070)">
+                    <div class="shadow"></div>
+                    <div class="label">
+                        <div class="icon"><i class="fas fa-gavel"></i></div>
+                        <div class="info">
+                            <div class="main">Badik Pusaka</div>
+                            <div class="sub">Simbol kehormatan dan status.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="option" style="--optionBackground:url(https://images.unsplash.com/photo-1582555196482-831412a4484d?q=80&w=1932)">
+                    <div class="shadow"></div>
+                    <div class="label">
+                        <div class="icon"><i class="fas fa-scroll"></i></div>
+                        <div class="info">
+                            <div class="main">Manuskrip Kuno</div>
+                            <div class="sub">Catatan sejarah dan sastra.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="option" style="--optionBackground:url(https://images.unsplash.com/photo-1594732520626-553b69a35a55?q=80&w=2070)">
+                    <div class="shadow"></div>
+                    <div class="label">
+                        <div class="icon"><i class="fas fa-gem"></i></div>
+                        <div class="info">
+                            <div class="main">Perhiasan Emas</div>
+                            <div class="sub">Kemewahan era kerajaan.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="thumbnail-gallery">
+            <div class="gallery-wrapper">
+                <div class="ts">
+                    <input type="radio" id="c1" name="ts" checked>
+                    <label class="t" for="c1"><img src="https://images.unsplash.com/photo-1537886079430-486164575c54?auto=format&fit=crop&w=600&q=80"></label>
+                    
+                    <input type="radio" id="c2" name="ts">
+                    <label class="t" for="c2"><img src="https://images.unsplash.com/photo-1537886194634-e6b923f92ff1?auto=format&fit=crop&w=600&q=80"></label>
+                    
+                    <input type="radio" id="c3" name="ts">
+                    <label class="t" for="c3"><img src="https://images.unsplash.com/photo-1537886243959-0b504cf58aa2?auto=format&fit=crop&w=600&q=80"></label>
+                    
+                    <input type="radio" id="c4" name="ts">
+                    <label class="t" for="c4"><img src="https://images.unsplash.com/photo-1537886492139-052c27acbfee?auto=format&fit=crop&w=600&q=80"></label>
+                    
+                    <input type="radio" id="c5" name="ts">
+                    <label class="t" for="c5"><img src="https://images.unsplash.com/photo-1537886464786-8a0d500b0da6?auto=format&fit=crop&w=600&q=80"></label>
+                </div>
+            </div>
+        </section>
         <section class="testimonials-section">
             <div class="testimonials-container">
                 <div class="testimonials-header">
@@ -389,54 +464,7 @@
                 </div>
             </div>
         </section>
-        <section class="team-section">
-        <div class="team-top-content">
-            <div class="team-container">
-                <div class="content-left">
-                    </div>
-                <div class="content-right">
-                    <h2 class="team-headline">Works for you, even when you aren't working</h2>
-                    <p class="team-description">
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.
-                    </p>
-                    <a href="#" class="team-cta-button">Learn more</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="team-bottom-content">
-            <div class="team-carousel-wrapper">
-                <div class="team-carousel">
-                    <div class="team-profile-card">
-                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a" alt="Team Member 1">
-                        <h4 class="profile-name">Nick Dower</h4>
-                    </div>
-                    <div class="team-profile-card">
-                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80" alt="Team Member 2">
-                        <h4 class="profile-name">Gabbi Hudson</h4>
-                    </div>
-                    <div class="team-profile-card">
-                        <img src="https://images.unsplash.com/photo-1547425260-76bc4d400c28" alt="Team Member 3">
-                        <h4 class="profile-name">Paul Perry</h4>
-                    </div>
-                    <div class="team-profile-card">
-                        <img src="https://images.unsplash.com/photo-1554151228-14d9def656e4" alt="Team Member 4">
-                        <h4 class="profile-name">Margo Lee</h4>
-                    </div>
-                    <div class="team-profile-card">
-                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956" alt="Team Member 5">
-                        <h4 class="profile-name">Sandra Adams</h4>
-                    </div>
-                </div>
-                <button class="carousel-nav prev">&lt;</button>
-                <button class="carousel-nav next">&gt;</button>
-            </div>
-
-                <div class="team-bottom-title">
-                    <h3><span>2025</span> team</h3>
-                </div>
-            </div>
-        </section>
+        
         <section id="kontak">
             <div class="footer-content">
                 <h2>Visual Core</h2>

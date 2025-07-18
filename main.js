@@ -155,43 +155,41 @@ document.addEventListener('DOMContentLoaded', () => {
         createStars(summaryScore, summaryContainer);
     }
 
-    const carousel = document.querySelector('.team-carousel');
-    const cards = document.querySelectorAll('.team-profile-card');
-    const prevButton = document.querySelector('.carousel-nav.prev');
-    const nextButton = document.querySelector('.carousel-nav.next');
+    
+    
+    const options = document.querySelectorAll('.option');
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+            // Hapus kelas 'active' dari semua option
+            options.forEach(opt => opt.classList.remove('active'));
+            // Tambahkan kelas 'active' ke option yang diklik
+            option.classList.add('active');
+        });
+    });
 
-    if (carousel && cards.length > 0) {
-        let currentIndex = Math.floor(cards.length / 2); // Start with the middle card active
-        const cardWidth = cards[0].offsetWidth + 30; // card width + gap
-
-        function updateCarousel() {
-            // Center the active card
-            const offset = (carousel.offsetWidth / 2) - (cardWidth / 2);
-            carousel.style.transform = `translateX(${-currentIndex * cardWidth + offset}px)`;
-
-            // Update active class
-            cards.forEach((card, index) => {
-                if (index === currentIndex) {
-                    card.classList.add('active');
-                } else {
-                    card.classList.remove('active');
-                }
-            });
+    const galleryRadios = document.querySelectorAll('#thumbnail-gallery [type="radio"]');
+    function reorderGallery(targetEl, els) {
+        const nItems = els.length;
+        let processedUncheck = 0;
+        for (const el of els) {
+            const containerEl = el.nextElementSibling;
+            if (el === targetEl) { // radio yang di-check
+                containerEl.style.setProperty("--w", "100%");
+                containerEl.style.setProperty("--l", "0");
+            } else { // radio yang tidak di-check
+                containerEl.style.setProperty("--w", `${100 / (nItems - 1)}%`);
+                containerEl.style.setProperty("--l", `${processedUncheck * 100 / (nItems - 1)}%`);
+                processedUncheck++;
+            }
         }
+    }
 
-        prevButton.addEventListener('click', () => {
-            currentIndex = (currentIndex > 0) ? currentIndex - 1 : cards.length - 1;
-            updateCarousel();
-        });
-
-        nextButton.addEventListener('click', () => {
-            currentIndex = (currentIndex < cards.length - 1) ? currentIndex + 1 : 0;
-            updateCarousel();
-        });
-
-        // Initial setup
-        updateCarousel();
-        window.addEventListener('resize', updateCarousel); // Adjust on window resize
+    if (galleryRadios.length > 0) {
+        for (const el of galleryRadios) {
+            el.addEventListener("input", e => reorderGallery(e.target, galleryRadios));
+        }
+        // Atur urutan awal saat halaman dimuat
+        reorderGallery(galleryRadios[0], galleryRadios);
     }
 });
 

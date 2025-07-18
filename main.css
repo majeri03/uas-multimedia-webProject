@@ -1090,149 +1090,213 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
     flex-grow: 1; /* Biarkan teks mengambil sisa ruang */
 }
 
-/* --- TEAM SECTION STYLES --- */
-.team-section {
-    position: relative;
-    font-family: 'Poppins', sans-serif;
-    background-color: #f8f9fae8; /* Bottom background color */
-    display: block;
+/* --- GAYA UNTUK titel section h2 --- */
+.section-title {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-weight: 800;
+    color: #333; /* Warna yang sedikit lebih gelap */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 40px; /* Jarak ke konten di bawahnya */
 }
-
-.team-top-content {
-    background-color: #ffffff; /* Top background color */
-    padding: 80px 20px;
-    background-image: url('https://images.unsplash.com/photo-1516534775068-ba3e7458af70');
-    background-size: 50% 100%;
-    background-repeat: no-repeat;
-    background-position: left center;
-}
-
-.team-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
+/* --- GAYA UNTUK GALERI EXPANDING ACCORDION --- */
+#galeri {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    background: #f0f2f5;
+    padding-top: 50px;       /* KUNCI: Kurangi jarak atas secara spesifik */
+    padding-bottom: 100px;   /* Jaga jarak bawah agar tetap rapi */
+    padding-left: 20px;
+    padding-right: 20px;
 }
-
-.content-right {
-    background-color: #ffffff;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+.options {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    overflow: hidden;
+    min-width: 600px;
+    max-width: 900px;
+    width: calc(100% - 100px);
+    height: 400px;
 }
-
-.team-headline {
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: #212529;
-    line-height: 1.3;
-}
-
-.team-description {
-    color: #6c757d;
-    margin: 20px 0;
-    line-height: 1.6;
-}
-
-.team-cta-button {
-    display: inline-block;
-    background-color: #ffc107;
-    color: #212529;
-    padding: 12px 28px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-}
-
-.team-cta-button:hover {
-    background-color: #e0a800;
-}
-
-.team-bottom-content {
-    padding: 80px 20px 60px;
+.option {
     position: relative;
-    margin-top: -60px; /* Pulls the carousel up into the top section */
+    overflow: hidden;
+    min-width: 60px;
+    margin: 10px;
+    background: var(--optionBackground, #e6e9ed);
+    background-size: auto 120%;
+    background-position: center;
+    cursor: pointer;
+    transition: 0.5s cubic-bezier(0.05, 0.61, 0.41, 0.95);
+    border-radius: 30px;
+    flex-grow: 1;
 }
-
-.team-carousel-wrapper {
-    max-width: 800px;
-    margin: 0 auto;
-    position: relative;
+.option.active {
+    flex-grow: 10000;
+    transform: scale(1);
+    max-width: 600px;
+    margin: 0px;
+    border-radius: 40px;
+    background-size: auto 100%;
 }
-
-.team-carousel {
+.option:not(.active) .label .info > div {
+    left: 20px;
+    opacity: 0;
+}
+.option .shadow {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    transition: 0.5s cubic-bezier(0.05, 0.61, 0.41, 0.95);
+}
+.option.active .shadow {
+    box-shadow: inset 0 -120px 120px -120px black, inset 0 -120px 120px -100px black;
+}
+.option:not(.active) .shadow {
+    bottom: -40px;
+    box-shadow: inset 0 -120px 0px -120px black, inset 0 -120px 0px -100px black;
+}
+.option .label {
+    display: flex;
+    position: absolute;
+    right: 0;
+    height: 40px;
+    transition: 0.5s cubic-bezier(0.05, 0.61, 0.41, 0.95);
+}
+.option.active .label {
+    bottom: 20px;
+    left: 20px;
+}
+.option:not(.active) .label {
+    bottom: 10px;
+    left: 10px;
+}
+.option .label .icon {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 30px;
-    transition: transform 0.5s ease-in-out;
-}
-
-.team-profile-card {
-    text-align: center;
-    flex: 0 0 200px; /* Base width for each card */
-    opacity: 0.6;
-    transform: scale(0.85);
-    transition: transform 0.4s ease, opacity 0.4s ease;
-}
-
-.team-profile-card.active {
-    opacity: 1;
-    transform: scale(1);
-    box-shadow: 0 10px 40px rgba(255, 193, 7, 0.4); /* Glow effect */
-    border-radius: 50%; /* Make shadow circular */
-}
-
-.team-profile-card img {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-}
-
-.profile-name {
-    font-weight: 600;
-    color: #343a40;
-    margin: 0;
-}
-
-.carousel-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 50%;
-    width: 40px;
+    min-width: 40px;
+    max-width: 40px;
     height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    color: #333; /* Default color */
+}
+.option .label .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 10px;
+    color: white;
+    white-space: pre;
+}
+.option .label .info > div {
+    position: relative;
+    transition: 0.5s cubic-bezier(0.05, 0.61, 0.41, 0.95), opacity 0.5s ease-out;
+}
+.option .label .info .main {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+.option .label .info .sub {
+    transition-delay: 0.1s;
+}
+
+/* --- GAYA UNTUK GALERI THUMBNAIL --- */
+#thumbnail-gallery {
+    display: grid;
+    place-content: center;
+    min-height: 100vh;
+    background-color: #f0f2f5;
+}
+
+.gallery-wrapper {
+    width: 70vmin; /* Ukuran relatif terhadap layar */
+    height: 80vmin;
+}
+
+.ts {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    --barH: 15%; /* Tinggi bar thumbnail */
+    perspective: 100px;
+    perspective-origin: center center;
+    transform-style: preserve-3d;
+    pointer-events: none;
+}
+
+.ts:after { /* Efek bayangan lempengan di bawah */
+    content: "";
+    display: block;
+    width: 100%;
+    height: 15px;
+    position: absolute;
+    bottom: 0;
+    background: linear-gradient(transparent 20%, rgba(0,0,0,0.1));
+    transform: rotateX(90deg) scaleX(1.2);
+    transform-origin: bottom center;
+}
+
+.t {
+    display: block;
+    width: var(--w); /* Lebar diatur oleh JS */
+    height: var(--barH);
+    position: absolute;
+    bottom: 0;
+    left: var(--l); /* Posisi diatur oleh JS */
+    transform-origin: top left;
+    transition: transform 0.5s, bottom 0.6s, left 0.6s, width 0.3s, box-shadow 1s;
+}
+.t:hover, :checked + .t {
+    transition: transform 0.5s, bottom 0.6s, left 0.6s, width 0.3s, box-shadow 0s;
+}
+
+.t img {
+    display: block; /* Perbaikan dari 'dislay' */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(0.8);
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+/* Logika utama: saat radio button di-check */
+:checked + label.t {
+    left: 0;
+    bottom: var(--barH);
+    height: calc(100% - var(--barH));
+    box-shadow: 0 0 0 transparent;
+    animation: anim 2s 1;
+}
+@keyframes anim {
+    from { transform: rotateY(6deg)rotateX(3deg) }
+}
+:checked + label.t img {
+    object-fit: contain;
+}
+
+/* Efek untuk thumbnail yang tidak aktif */
+:not(:checked) + .t {
+    transform: translate3d(0, 0, -5px);
+    pointer-events: auto;
     cursor: pointer;
-    font-size: 1.5rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
-.carousel-nav.prev { left: -20px; }
-.carousel-nav.next { right: -20px; }
-
-.team-bottom-title {
-    text-align: center;
-    margin-top: 60px;
+:not(:checked) + .t:hover {
+    transform: translate3d(0, -7px, -5px);
+    box-shadow: 0 30px 30px -25px rgba(0,0,0,0.3);
 }
-
-.team-bottom-title h3 {
-    font-size: 2rem;
-    font-weight: 400;
-    color: #6c757d;
+:not(:checked) + .t img {
+    transform: scale(0.9); /* Membuat celah antar thumbnail */
 }
-.team-bottom-title span {
-    color: #ffc107;
-    font-weight: 700;
-}
-
-
 
 @media (max-width: 992px) {
     .testimonials-grid { grid-template-columns: 1fr 1fr; }
@@ -1245,6 +1309,37 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
 }
 
 @media (max-width: 768px) {
+    /* --- RESPONSIVE UNTUK GALERI THUMBNAIL --- */
+    .gallery-wrapper {
+        width: 90vw; /* Lebar 90% dari layar */
+        height: 70vh; /* Tinggi 70% dari layar */
+    }
+    .ts {
+        --barH: 20%; /* Perbesar bar thumbnail di mobile */
+    }
+    #galeri {
+        align-items: flex-start; /* Mulai dari atas, bukan tengah */
+        padding-top: 100px; /* Beri jarak dari header */
+    }
+    .options {
+        flex-direction: column; /* Ubah arah tumpukan jadi vertikal */
+        overflow-y: auto;       /* IZINKAN SCROLL VERTIKAL */
+        overflow-x: hidden;
+        height: 75vh;           /* Batasi tinggi agar bisa di-scroll */
+        width: 90%;             /* Sesuaikan lebar */
+        min-width: 0;
+    }
+    .option {
+        min-width: 0;
+        margin: 5px;
+        flex-grow: 1; /* Pastikan semua item punya ruang yang sama */
+    }
+    .option.active {
+        max-width: 100%;
+        flex-grow: 5; /* Buat item aktif sedikit lebih besar */
+    }
+ 
+    /* ----------------------------------------------------------------- */
     .testimonials-grid { grid-template-columns: 1fr; gap: 60px;}
     .header-title { font-size: 2rem; }
     .team-profile-card {
