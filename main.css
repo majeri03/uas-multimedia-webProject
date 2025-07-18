@@ -1254,6 +1254,13 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
         width: 150px;
         height: 150px;
     }
+
+    #tim {
+        /* GANTI ATURAN LAMA DENGAN INI */
+        background-image: url('assets/images/timMobile.png');
+        background-size: cover;
+        background-position: center center;
+    }
 }
 
 /* --- ATURAN RESPONSIVE (MOBILE) - FINAL --- */
