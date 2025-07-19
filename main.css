@@ -51,17 +51,30 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
 .content h1 { font-size: clamp(5rem, 9vw, 10rem); font-weight: 900; letter-spacing: -2px; margin: 0; background: linear-gradient(90deg, #3d3d3d, #000000); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .content p { font-size: clamp(1rem, 3vw, 1.25rem);  font-weight: 400; margin-top: 2rem;; color: var(--text-secondary); }
 .content h1 .font-visual {
-    font-family: 'Playwrite VN Guides', cursive;
-    font-weight: 300; /* Font ini lebih bagus saat tidak terlalu tebal */
+   font-family: 'Roboto', sans-serif;
+   font-weight: 200; /* Font Notable hanya punya weight 400 */
 }
 /* Tambahkan aturan baru ini */
 .content h1 .font-core {
     font-family: 'Roboto', sans-serif;
-    font-weight: 900; /* Beri bobot paling tebal agar kontras */
+    font-weight: 300; /* Beri bobot paling tebal agar kontras */
     letter-spacing: -4px; /* Rapatkan sedikit untuk kesan solid */
     margin-left: 0.2em; /* Beri sedikit jarak dari kata 'VISUAL' */
 }
 
+/* --- GAYA UNTUK ANIMASI TYPEWRITER BARU --- */
+.typewriter-text {
+    display: inline-block;
+    overflow: hidden; /* Menyembunyikan teks yang belum 'diketik' */
+    white-space: nowrap; /* Mencegah teks pindah baris saat animasi */
+    border-right: 4px solid #333; /* Kursor ketikan */
+    animation: blinkingCursor 700ms infinite;
+}
+
+@keyframes blinkingCursor {
+    0%, 100% { border-right-color: transparent; }
+    50% { border-right-color: #333; }
+}
 /* --- GAYA UNTUK BAGIAN TIM KREATOR --- */
 #tim {
     position: relative; /* Diperlukan untuk lapisan overlay */
@@ -1298,6 +1311,67 @@ input[type="radio"] {
     transform: scale(0.9); /* Membuat celah antar thumbnail */
 }
 
+/* --- GAYA UNTUK SECTION SCROLL TIM --- */
+.team-scroll-wrapper {
+    height: 300vh; /* Atur total ketinggian area scroll (3x tinggi layar) */
+    position: relative;
+}
+.fake-scroll {
+    position: absolute;
+    top: 0;
+    width: 1px;
+    z-index: -10; /* Pastikan tidak terlihat */
+}
+
+.team-scroll-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0 10%;
+    justify-items: end;
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.team-image-card {
+    position: relative;
+    width: 300px;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.team-image-card:nth-child(2n) {
+    justify-self: start;
+}
+
+/* Menetapkan gambar untuk setiap kartu */
+.team-image-card:nth-child(1) { background-image: url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation/img/image1.jpg'); }
+.team-image-card:nth-child(2) { background-image: url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation/img/image2.jpg'); }
+.team-image-card:nth-child(3) { background-image: url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation/img/image3.jpg'); }
+.team-image-card:nth-child(4) { background-image: url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation/img/image4.jpg'); }
+.team-image-card:nth-child(5) { background-image: url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation/img/image5.jpg'); }
+.team-image-card:nth-child(6) { background-image: url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation/img/image6.jpg'); }
+
+/* GAYA UNTUK TEKS DI DALAM KARTU TIM */
+.card-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 40px 20px 20px;
+    color: white;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s, transform 0.5s;
+}
+.team-image-card.is-intersecting .card-info {
+    opacity: 1;
+    transform: translateY(0);
+}
+.card-name { font-size: 1.5rem; font-weight: 700; margin: 0; }
+.card-role { font-size: 1rem; font-weight: 400; margin: 5px 0 0; opacity: 0.8; }
+
 @media (max-width: 992px) {
     .testimonials-grid { grid-template-columns: 1fr 1fr; }
     .team-top-content {
@@ -1309,6 +1383,14 @@ input[type="radio"] {
 }
 
 @media (max-width: 768px) {
+    /* --- RESPONSIVE UNTUK SCROLL TIM --- */
+    .team-scroll-container {
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+    .team-image-card:nth-child(2n) {
+        justify-self: center;
+    }
     /* --- RESPONSIVE UNTUK GALERI THUMBNAIL --- */
     .gallery-wrapper {
         width: 90vw; /* Lebar 90% dari layar */

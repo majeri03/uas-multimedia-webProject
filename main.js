@@ -5,7 +5,49 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 // Pastikan DOM sepenuhnya dimuat sebelum menjalankan skrip UI & animasi
 document.addEventListener('DOMContentLoaded', () => {
+    // --- LOGIKA UNTUK ANIMASI TYPEWRITER ---
+function runTypewriterAnimation() {
+    const visualEl = document.querySelector('.font-visual');
+    const coreEl = document.querySelector('.font-core');
 
+    if (!visualEl || !coreEl) return;
+
+    const text1 = visualEl.textContent;
+    const text2 = coreEl.textContent;
+
+    visualEl.textContent = '';
+    coreEl.textContent = '';
+    visualEl.classList.add('typewriter-text');
+
+    let i = 0;
+    function typeVisual() {
+        if (i < text1.length) {
+            visualEl.textContent += text1.charAt(i);
+            i++;
+            setTimeout(typeVisual, 200); // Kecepatan ketikan
+        } else {
+            // Setelah kata pertama selesai, mulai kata kedua
+            visualEl.style.borderRight = 'none'; // Hapus kursor dari kata pertama
+            coreEl.classList.add('typewriter-text');
+            let j = 0;
+            function typeCore() {
+                if (j < text2.length) {
+                    coreEl.textContent += text2.charAt(j);
+                    j++;
+                    setTimeout(typeCore, 200);
+                } else {
+                    // Animasi selesai
+                    coreEl.style.borderRight = '4px solid #333';
+                }
+            }
+            typeCore();
+        }
+    }
+    typeVisual();
+}
+
+runTypewriterAnimation();
+// ------------------------------------
     // 2. Inisialisasi Logika Menu Hamburger
     const hamburgerBtn = document.querySelector('.hamburger-menu');
     const navLinksList = document.querySelector('.nav-links');
@@ -154,8 +196,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const summaryScore = parseFloat(document.querySelector('.summary-score').textContent);
         createStars(summaryScore, summaryContainer);
     }
-
-    
     
     const options = document.querySelectorAll('.option');
     options.forEach(option => {
@@ -191,6 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Atur urutan awal saat halaman dimuat
         reorderGallery(galleryRadios[0], galleryRadios);
     }
+
 });
 
 // --- FASE 2: LOGIKA 3D (BERJALAN SECARA INDEPENDEN) ---
@@ -286,3 +327,98 @@ if (renderer.domElement) {
         console.error("Elemen canvas #bg-canvas tidak ditemukan!");
     }
 
+// ---------------------------------------
+// --- LOGIKA UNTUK ANIMASI SCROLL TIM (VERSI DISEMPURNAKAN) ---
+(function() {
+    function easeOutQuad(t) { return t * (2 - t) }
+    function random(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min }
+    function randomPositiveOrNegative(min, max) { return random(min, max) * (Math.random() > 0.5 ? 1 : -1) }
+    function setTransform(el, transform) { el.style.transform = transform; el.style.WebkitTransform = transform; }
+
+    const section = document.querySelector('#team-scroll-section');
+    const container = document.querySelector('.team-scroll-container');
+    if (!container || !section) return;
+
+    var current = 0, target = 0, ease = 0.075, rafId = undefined, rafActive = false;
+    var images = Array.prototype.slice.call(container.querySelectorAll('.team-image-card'));
+    var windowWidth, containerHeight, imageHeight;
+    var rotateXMaxList = [], rotateYMaxList = [], translateXMax = -200;
+
+    images.forEach(() => {
+        rotateXMaxList.push(randomPositiveOrNegative(20, 40));
+        rotateYMaxList.push(randomPositiveOrNegative(20, 60));
+    });
+
+    function setupAnimation() {
+        windowWidth = window.innerWidth;
+        containerHeight = container.getBoundingClientRect().height;
+        imageHeight = containerHeight / (windowWidth > 760 ? images.length / 2 : images.length);
+        section.style.height = containerHeight + 'px'; // Atur tinggi section, bukan body
+        startAnimation();
+    }
+
+    function updateScroll() {
+        // Kalkulasi scroll hanya relatif terhadap section ini
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= 0 && rect.bottom >= 0) {
+            target = -rect.top;
+        }
+        startAnimation();
+    }
+
+    function startAnimation() {
+        if (!rafActive) { rafActive = true; rafId = requestAnimationFrame(updateAnimation); }
+    }
+
+    function updateAnimation() {
+        var diff = target - current;
+        var delta = Math.abs(diff) < 0.1 ? 0 : diff * ease;
+        if (delta) {
+            current += delta;
+            current = parseFloat(current.toFixed(2));
+            rafId = requestAnimationFrame(updateAnimation);
+        } else {
+            current = target;
+            rafActive = false;
+            cancelAnimationFrame(rafId);
+        }
+        updateAnimationImages();
+        setTransform(container, 'translateY(' + -current + 'px)');
+    }
+
+    function updateAnimationImages() {
+        var ratio = current / imageHeight;
+        var intersectionRatio;
+        images.forEach(function (image, index) {
+            var intersectionRatioIndex = windowWidth > 760 ? parseInt(index / 2) : index;
+            var intersectionRatioValue = ratio - intersectionRatioIndex;
+            intersectionRatio = Math.max(0, 1 - Math.abs(intersectionRatioValue));
+
+            var rotateXMax = rotateXMaxList[index];
+            var rotateX = (rotateXMax - (rotateXMax * intersectionRatio)).toFixed(2);
+            var rotateYMax = rotateYMaxList[index];
+            var rotateY = (rotateYMax - (rotateYMax * intersectionRatio)).toFixed(2);
+            var translateX = (windowWidth > 760) ? (translateXMax - (translateXMax * easeOutQuad(intersectionRatio))).toFixed(2) : 0;
+            
+            if (intersectionRatioValue < 0) {
+                rotateX = -rotateX;
+                rotateY = -rotateY;
+                translateX = index % 2 ? -translateX : 0;
+            } else {
+                translateX = index % 2 ? 0 : translateX;
+            }
+            
+            setTransform(image, 'perspective(500px) translateX(' + translateX + 'px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)');
+            
+            if (intersectionRatio > 0.3) {
+                image.classList.add('is-intersecting');
+            } else {
+                image.classList.remove('is-intersecting');
+            }
+        });
+    }
+    
+    window.addEventListener('resize', setupAnimation);
+    window.addEventListener('scroll', updateScroll, { passive: true });
+    setupAnimation();
+})();
