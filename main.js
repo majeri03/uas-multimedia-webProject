@@ -232,6 +232,84 @@ runTypewriterAnimation();
         reorderGallery(galleryRadios[0], galleryRadios);
     }
 
+    // Fungsi utama untuk menginisialisasi semua interaksi di section video
+    function initializeVideoSection() {
+        const section = document.querySelector('#video');
+        if (!section) return; // Jika section tidak ditemukan, hentikan eksekusi
+
+        // 1. Inisialisasi Tooltip saat hover di avatar
+        initializeAvatarTooltips();
+
+        // 2. Inisialisasi efek parallax pada elemen latar belakang
+        initializeParallaxEffect();
+    }
+
+    // Fungsi untuk menangani logika tooltip avatar
+    function initializeAvatarTooltips() {
+        const avatars = document.querySelectorAll('.video-docs-avatar');
+        const visitorNames = ['Dian Puspita', 'Budi Santoso', 'Sarah Abdullah']; // Nama sesuai urutan avatar
+
+        avatars.forEach((avatar, index) => {
+            // Event saat kursor masuk ke area avatar
+            avatar.addEventListener('mouseenter', () => {
+                // Buat elemen tooltip baru
+                const tooltip = document.createElement('div');
+                tooltip.className = 'video-docs-avatar-tooltip';
+                tooltip.textContent = visitorNames[index] || 'Pengunjung'; // Tampilkan nama, atau 'Pengunjung' jika nama tidak ada
+                
+                // Tambahkan tooltip ke dalam elemen avatar
+                avatar.appendChild(tooltip);
+
+                // Animasikan kemunculan tooltip
+                setTimeout(() => {
+                    tooltip.style.opacity = '1';
+                    tooltip.style.transform = 'translate(-50%, -5px)';
+                }, 10); // Delay kecil untuk memastikan transisi berjalan
+            });
+
+            // Event saat kursor meninggalkan area avatar
+            avatar.addEventListener('mouseleave', () => {
+                const tooltip = avatar.querySelector('.video-docs-avatar-tooltip');
+                if (tooltip) {
+                    // Animasikan tooltip menghilang lalu hapus dari DOM
+                    tooltip.style.opacity = '0';
+                    tooltip.style.transform = 'translate(-50%, 0)';
+                    setTimeout(() => {
+                        tooltip.remove();
+                    }, 200); // Waktu harus cocok dengan transisi di CSS
+                }
+            });
+        });
+    }
+
+    // Fungsi untuk menangani efek parallax pada titik-titik di latar belakang
+    function initializeParallaxEffect() {
+        const floatingDots = document.querySelectorAll('.video-docs-floating-dot');
+        const section = document.querySelector('.video-docs-section');
+        if (floatingDots.length === 0 || !section) return;
+
+        section.addEventListener('mousemove', (e) => {
+            // Dapatkan posisi mouse relatif terhadap section, bukan window
+            const rect = section.getBoundingClientRect();
+            const mouseX = (e.clientX - rect.left) / rect.width; // Nilai 0 sampai 1
+            const mouseY = (e.clientY - rect.top) / rect.height; // Nilai 0 sampai 1
+            
+            // Gerakkan setiap titik dengan kecepatan yang berbeda
+            floatingDots.forEach((dot, index) => {
+                const speed = (index + 1) * 7; // Kecepatan berbeda untuk setiap dot
+                const x = (mouseX - 0.5) * speed;
+                const y = (mouseY - 0.5) * speed;
+                
+                // Terapkan transformasi dengan properti 'transform' yang sudah ada dari animasi 'float'
+                // Ini akan menggabungkan efek float dengan parallax mouse
+                dot.style.setProperty('--parallax-x', `${x}px`);
+                dot.style.setProperty('--parallax-y', `${y}px`);
+            });
+        });
+    }
+
+    // Jalankan inisialisasi untuk section video
+    initializeVideoSection();
 });
 
 // --- FASE 2: LOGIKA 3D (BERJALAN SECARA INDEPENDEN) ---
@@ -265,23 +343,19 @@ if (renderer.domElement) {
 
     console.log("Memulai proses memuat model 3D dengan URL yang benar...");
     loader.load(
-        // URL INI DIJAMIN BEBAS DARI MASALAH CORS
         'assets/models/merkahba.glb', 
-        
-        // Fungsi ini akan berjalan jika model berhasil dimuat
         function (gltf) {
             console.log("Model 3D BERHASIL dimuat!");
             customModel = gltf.scene;
             
-            // Sesuaikan ukuran & posisi untuk model Crystal ini
             customModel.scale.set(10, 10, 10); 
             customModel.position.y = 0;
            customModel.traverse((child) => {
                 if (child.isMesh) {
-                    child.material.color.set(0xffffff); // putih
+                    child.material.color.set(0xffffff);
                     if (child.material.emissive) {
-                        child.material.emissive.set(0x000000); // nyala putih
-                        child.material.emissiveIntensity = 1;  // sangat terang
+                        child.material.emissive.set(0x000000);
+                        child.material.emissiveIntensity = 1;
                     }
                     child.material.needsUpdate = true;
                 }
@@ -292,7 +366,6 @@ if (renderer.domElement) {
         },
         undefined,
         function (error) {
-            // Ini seharusnya tidak akan berjalan lagi
             console.error('GAGAL memuat model 3D:', error);
         }
     );
@@ -308,8 +381,8 @@ if (renderer.domElement) {
     function animate() {
     requestAnimationFrame(animate);
     if (customModel) {
-        customModel.rotation.y += 0.01; // terus muter di Y
-        customModel.rotation.x += 0.005; // sedikit muter di X
+        customModel.rotation.y += 0.01;
+        customModel.rotation.x += 0.005;
     }
     renderer.render(scene, camera);
 }
@@ -328,21 +401,22 @@ if (renderer.domElement) {
     }
 
 // ---------------------------------------
-// --- LOGIKA UNTUK ANIMASI SCROLL TIM (VERSI DISEMPURNAKAN) ---
+// --- LOGIKA UNTUK ANIMASI SCROLL TIM (VERSI PERBAIKAN TOTAL) ---
 (function() {
-    function easeOutQuad(t) { return t * (2 - t) }
-    function random(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min }
-    function randomPositiveOrNegative(min, max) { return random(min, max) * (Math.random() > 0.5 ? 1 : -1) }
+    // Helper functions
+    function easeOutQuad(t) { return t * (2 - t); }
+    function random(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+    function randomPositiveOrNegative(min, max) { return random(min, max) * (Math.random() > 0.5 ? 1 : -1); }
     function setTransform(el, transform) { el.style.transform = transform; el.style.WebkitTransform = transform; }
 
     const section = document.querySelector('#team-scroll-section');
     const container = document.querySelector('.team-scroll-container');
     if (!container || !section) return;
 
-    var current = 0, target = 0, ease = 0.075, rafId = undefined, rafActive = false;
-    var images = Array.prototype.slice.call(container.querySelectorAll('.team-image-card'));
-    var windowWidth, containerHeight, imageHeight;
-    var rotateXMaxList = [], rotateYMaxList = [], translateXMax = -200;
+    let current = 0, target = 0, ease = 0.075, rafId = undefined, rafActive = false;
+    const images = Array.prototype.slice.call(container.querySelectorAll('.team-image-card'));
+    let windowWidth, imageHeight;
+    const rotateXMaxList = [], rotateYMaxList = [], translateXMax = -200;
 
     images.forEach(() => {
         rotateXMaxList.push(randomPositiveOrNegative(20, 40));
@@ -351,17 +425,34 @@ if (renderer.domElement) {
 
     function setupAnimation() {
         windowWidth = window.innerWidth;
-        containerHeight = container.getBoundingClientRect().height;
-        imageHeight = containerHeight / (windowWidth > 760 ? images.length / 2 : images.length);
-        section.style.height = containerHeight + 'px'; // Atur tinggi section, bukan body
+        const isMobile = windowWidth <= 768;
+
+        // --- PERBAIKAN UTAMA ---
+        // 1. Tentukan tinggi scroll per gambar secara eksplisit menggunakan tinggi viewport.
+        // Ini memastikan setiap 'langkah' scroll konsisten.
+        imageHeight = window.innerHeight; 
+
+        // 2. Tentukan jumlah 'indeks' atau 'posisi' berdasarkan layout.
+        const numScrollIndices = isMobile ? images.length : Math.ceil(images.length / 2);
+
+        // 3. Hitung total tinggi area scroll.
+        // Kita gunakan (jumlah posisi - 1) agar scroll berakhir saat gambar terakhir di tengah.
+        const totalScrollHeight = (numScrollIndices > 1) ? (numScrollIndices - 1) * imageHeight : imageHeight;
+        
+        // 4. Terapkan tinggi yang sudah dihitung dengan pasti ke section.
+        section.style.height = totalScrollHeight + 'px';
+        
         startAnimation();
     }
 
     function updateScroll() {
-        // Kalkulasi scroll hanya relatif terhadap section ini
         const rect = section.getBoundingClientRect();
-        if (rect.top <= 0 && rect.bottom >= 0) {
-            target = -rect.top;
+        // Hanya update target jika section sedang atau telah melewati bagian atas layar
+        if (rect.top <= 0) {
+            // Batasi target agar tidak melebihi total tinggi scroll
+            target = Math.min(-rect.top, parseFloat(section.style.height));
+        } else {
+            target = 0;
         }
         startAnimation();
     }
@@ -371,8 +462,9 @@ if (renderer.domElement) {
     }
 
     function updateAnimation() {
-        var diff = target - current;
-        var delta = Math.abs(diff) < 0.1 ? 0 : diff * ease;
+        const diff = target - current;
+        const delta = Math.abs(diff) < 0.1 ? 0 : diff * ease;
+
         if (delta) {
             current += delta;
             current = parseFloat(current.toFixed(2));
@@ -382,34 +474,50 @@ if (renderer.domElement) {
             rafActive = false;
             cancelAnimationFrame(rafId);
         }
+
         updateAnimationImages();
+        // Pindahkan container. Karena container 'sticky', ini akan bekerja dengan benar
+        // untuk menggeser kartu-kartu di dalamnya.
         setTransform(container, 'translateY(' + -current + 'px)');
     }
 
     function updateAnimationImages() {
-        var ratio = current / imageHeight;
-        var intersectionRatio;
+        // 'ratio' adalah indikator posisi scroll saat ini, diukur dalam 'langkah' (imageHeight).
+        const ratio = current / imageHeight;
+        
         images.forEach(function (image, index) {
-            var intersectionRatioIndex = windowWidth > 760 ? parseInt(index / 2) : index;
-            var intersectionRatioValue = ratio - intersectionRatioIndex;
-            intersectionRatio = Math.max(0, 1 - Math.abs(intersectionRatioValue));
+            const isMobile = windowWidth <= 768;
+            // Indeks posisi untuk kartu ini (di mobile: 0, 1, 2, ... | di desktop: 0, 0, 1, 1, ...)
+            const intersectionRatioIndex = isMobile ? index : Math.floor(index / 2);
+            
+            // Seberapa jauh 'ratio' dari indeks kartu ini. 0 = tepat di tengah.
+            const intersectionRatioValue = ratio - intersectionRatioIndex;
+            
+            // Nilai antara 0 (jauh) dan 1 (tepat di tengah).
+            const intersectionRatio = Math.max(0, 1 - Math.abs(intersectionRatioValue));
 
-            var rotateXMax = rotateXMaxList[index];
-            var rotateX = (rotateXMax - (rotateXMax * intersectionRatio)).toFixed(2);
-            var rotateYMax = rotateYMaxList[index];
-            var rotateY = (rotateYMax - (rotateYMax * intersectionRatio)).toFixed(2);
-            var translateX = (windowWidth > 760) ? (translateXMax - (translateXMax * easeOutQuad(intersectionRatio))).toFixed(2) : 0;
+            // Kalkulasi Transformasi
+            const rotateXMax = rotateXMaxList[index];
+            let rotateX = (rotateXMax - (rotateXMax * intersectionRatio)).toFixed(2);
+            const rotateYMax = rotateYMaxList[index];
+            let rotateY = (rotateYMax - (rotateYMax * intersectionRatio)).toFixed(2);
+            let translateX = isMobile ? 0 : (translateXMax - (translateXMax * easeOutQuad(intersectionRatio))).toFixed(2);
             
             if (intersectionRatioValue < 0) {
                 rotateX = -rotateX;
                 rotateY = -rotateY;
-                translateX = index % 2 ? -translateX : 0;
+                if (!isMobile) {
+                    translateX = index % 2 ? -translateX : 0;
+                }
             } else {
-                translateX = index % 2 ? 0 : translateX;
+                 if (!isMobile) {
+                    translateX = index % 2 ? 0 : translateX;
+                 }
             }
             
             setTransform(image, 'perspective(500px) translateX(' + translateX + 'px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)');
             
+            // Tambah/Hapus kelas untuk menampilkan info
             if (intersectionRatio > 0.3) {
                 image.classList.add('is-intersecting');
             } else {
@@ -418,7 +526,10 @@ if (renderer.domElement) {
         });
     }
     
+    // Setup awal dan saat ukuran window berubah.
     window.addEventListener('resize', setupAnimation);
     window.addEventListener('scroll', updateScroll, { passive: true });
+    
+    // Jalankan setup awal
     setupAnimation();
 })();
