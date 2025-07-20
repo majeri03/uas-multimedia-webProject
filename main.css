@@ -1348,12 +1348,12 @@ input[type="radio"] {
 }
 
 /* Menetapkan gambar untuk setiap kartu */
-.team-image-card:nth-child(1) { background-image: url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation/img/image1.jpg'); }
-.team-image-card:nth-child(2) { background-image: url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation/img/image2.jpg'); }
-.team-image-card:nth-child(3) { background-image: url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation/img/image3.jpg'); }
-.team-image-card:nth-child(4) { background-image: url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation/img/image4.jpg'); }
-.team-image-card:nth-child(5) { background-image: url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation/img/image5.jpg'); }
-.team-image-card:nth-child(6) { background-image: url('https://cdn.jsdelivr.net/gh/lmgonzalves/scroll-based-animation/img/image6.jpg'); }
+.team-image-card:nth-child(1) { background-image: url('assets/timProfile/4.png'); }
+.team-image-card:nth-child(2) { background-image: url('assets/timProfile/2.png'); }
+.team-image-card:nth-child(3) { background-image: url('assets/timProfile/1.png'); }
+.team-image-card:nth-child(4) { background-image: url('assets/timProfile/3.png'); }
+.team-image-card:nth-child(5) { background-image: url('assets/timProfile/5.png'); }
+.team-image-card:nth-child(6) { background-image: url('assets/timProfile/6.png'); }
 
 /* GAYA UNTUK TEKS DI DALAM KARTU TIM */
 .card-info {
