@@ -378,7 +378,7 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
 }
 /* bagian KONTAK */
 #kontak {
-    background-color: #1c1e2167; /* Background gelap untuk footer */
+    background-color: #1c1e21c5; /* Background gelap untuk footer */
     color: #f0f2f5; /* Teks terang */
     border-bottom: none; /* Hapus garis batas di bagian paling akhir */
 }
@@ -389,7 +389,7 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
 
 #kontak h2 {
     font-size: 2rem;
-    color: white; /* Pastikan judul terlihat jelas */
+    color: rgb(255, 255, 255); /* Pastikan judul terlihat jelas */
     margin-bottom: 0.5rem;
 }
 
@@ -397,6 +397,7 @@ section h2 { font-size: clamp(2rem, 8vw, 4rem); color: #ccc; }
     color: var(--text-secondary);
     max-width: 500px;
     margin-bottom: 2rem;
+    color: #ffffff;
 }
 
 .social-links {
