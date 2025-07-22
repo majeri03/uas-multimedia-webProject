@@ -343,16 +343,16 @@ if (renderer.domElement) {
 
     console.log("Memulai proses memuat model 3D dengan URL yang benar...");
     loader.load(
-        'assets/models/merkahba.glb', 
+        'assets/models/phinisi.glb', 
         function (gltf) {
             console.log("Model 3D BERHASIL dimuat!");
             customModel = gltf.scene;
             
-            customModel.scale.set(10, 10, 10); 
+            customModel.scale.set(0.7, 0.7, 0.7);
             customModel.position.y = 0;
            customModel.traverse((child) => {
                 if (child.isMesh) {
-                    child.material.color.set(0xffffff);
+                    child.material.color.set(0x8B4513);
                     if (child.material.emissive) {
                         child.material.emissive.set(0x000000);
                         child.material.emissiveIntensity = 1;
