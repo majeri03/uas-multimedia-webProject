@@ -293,7 +293,7 @@ if (renderer.domElement) {
 
     console.log("Memulai proses memuat model 3D dengan URL yang benar...");
     loader.load(
-        'assets/models/phinisi.glb', 
+        'assets/models/AnyConv.com__pinisi3D.glb', 
         function (gltf) {
             console.log("Model 3D BERHASIL dimuat!");
             customModel = gltf.scene;
