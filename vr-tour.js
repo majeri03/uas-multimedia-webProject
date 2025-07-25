@@ -213,8 +213,15 @@ function initMobileControls() {
 }
 
 function initTouchLookControls() {
-    // Variabel untuk menyimpan pergerakan dan damping
-    let moveX = 0, moveY = 0;
+    // === PENGATURAN KONTROL SENTUH BARU ===
+    const sensitivity = 0.0015; // Sensitivitas. Lebih KECIL = lebih lambat dan terkontrol.
+    const damping = 0.85;       // Efek rem. Lebih KECIL = lebih cepat berhenti.
+
+    let isDragging = false;
+    let previousTouchX = 0;
+    let previousTouchY = 0;
+    let moveX = 0;
+    let moveY = 0;
 
     const onTouchStart = (event) => {
         const target = event.target;
@@ -231,10 +238,23 @@ function initTouchLookControls() {
 
         const touchX = event.touches[0].clientX;
         const touchY = event.touches[0].clientY;
+        const deltaX = touchX - previousTouchX;
+        const deltaY = touchY - previousTouchY;
 
-        // Tambahkan pergerakan baru, jangan langsung diterapkan
-        moveX += touchX - previousTouchX;
-        moveY += touchY - previousTouchY;
+        // --- LOGIKA KUNCI SUMBU (AXIS LOCK) ---
+        // Jika gerakan vertikal jauh lebih besar dari horizontal, abaikan gerakan horizontal.
+        if (Math.abs(deltaY) > Math.abs(deltaX) * 2) {
+            moveY += deltaY;
+        } 
+        // Jika gerakan horizontal jauh lebih besar dari vertikal, abaikan gerakan vertikal.
+        else if (Math.abs(deltaX) > Math.abs(deltaY) * 2) {
+            moveX += deltaX;
+        }
+        // Jika gerakannya diagonal, izinkan keduanya.
+        else {
+            moveX += deltaX;
+            moveY += deltaY;
+        }
         
         previousTouchX = touchX;
         previousTouchY = touchY;
@@ -244,28 +264,30 @@ function initTouchLookControls() {
         isDragging = false;
     };
 
-    // Fungsi update yang akan dipanggil di loop utama (animate)
+    // Fungsi update ini akan dipanggil di loop utama (animate)
     const update = (delta) => {
         if (!controls) return;
-        const damping = 0.9; // Efek rem/peredam, semakin kecil semakin cepat berhenti
-        const sensitivity = 0.002; // Sensitivitas gerakan
-
-        // Terapkan pergerakan
+        
+        // Terapkan pergerakan dengan sensitivitas
         controls.getObject().rotation.y -= moveX * sensitivity;
         controls.getObject().rotation.x -= moveY * sensitivity;
 
-        // Batasi sudut pandang vertikal
+        // Batasi sudut pandang vertikal agar tidak terbalik
         controls.getObject().rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, controls.getObject().rotation.x));
 
-        // Kurangi pergerakan dengan damping agar berhenti perlahan
+        // Terapkan damping agar berhenti dengan halus (efek rem)
         moveX *= damping;
         moveY *= damping;
+
+        // Hentikan total jika gerakan sudah sangat lambat
+        if (Math.abs(moveX) < 0.1) moveX = 0;
+        if (Math.abs(moveY) < 0.1) moveY = 0;
     };
 
     vrContainer.addEventListener('touchstart', onTouchStart);
     vrContainer.addEventListener('touchmove', onTouchMove);
     vrContainer.addEventListener('touchend', onTouchEnd);
-
+    
     // Kembalikan fungsi update agar bisa dipanggil dari animate
     return { update };
 }
@@ -314,7 +336,7 @@ function animate() {
         // --- LOGIKA GERAKAN HORIZONTAL ---
         if (isMobile) {
             // === KHUSUS UNTUK HP (JOYSTICK) ===
-            const mobileSpeed = 20.0;
+            const mobileSpeed = 10.0;
             
             // 'velocity' diatur langsung oleh joystick, kita tinggal terapkan gerakannya
             controls.moveRight(velocity.x * mobileSpeed * delta);
