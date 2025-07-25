@@ -110,6 +110,7 @@ let animationFrameId = null;
 let isDragging = false;
 let previousTouchX = 0;
 let previousTouchY = 0;
+let touchLookUpdater = null;
 
 // === EVENT LISTENERS ===
 enterVRButton.addEventListener('click', () => {
@@ -208,12 +209,14 @@ function initMobileControls() {
     });
 
     initJoystick(); // Panggil inisialisasi joystick dari sini
-    initTouchLookControls();
+    touchLookUpdater = initTouchLookControls();
 }
 
 function initTouchLookControls() {
+    // Variabel untuk menyimpan pergerakan dan damping
+    let moveX = 0, moveY = 0;
+
     const onTouchStart = (event) => {
-        // Hanya aktifkan jika sentuhan ada di luar area joystick dan tombol
         const target = event.target;
         if (target === canvas || target === pauseOverlay || target === vrContainer) {
             isDragging = true;
@@ -223,21 +226,15 @@ function initTouchLookControls() {
     };
 
     const onTouchMove = (event) => {
-        if (!isDragging || !controls) return;
+        if (!isDragging) return;
         event.preventDefault();
 
         const touchX = event.touches[0].clientX;
         const touchY = event.touches[0].clientY;
 
-        const deltaX = touchX - previousTouchX;
-        const deltaY = touchY - previousTouchY;
-
-        // Memutar kamera berdasarkan pergeseran jari
-        controls.getObject().rotation.y -= deltaX * 0.008; // Kecepatan putar horizontal
-        controls.getObject().rotation.x -= deltaY * 0.008; // Kecepatan putar vertikal
-
-        // Batasi sudut pandang vertikal agar tidak terbalik
-        controls.getObject().rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, controls.getObject().rotation.x));
+        // Tambahkan pergerakan baru, jangan langsung diterapkan
+        moveX += touchX - previousTouchX;
+        moveY += touchY - previousTouchY;
         
         previousTouchX = touchX;
         previousTouchY = touchY;
@@ -247,10 +244,30 @@ function initTouchLookControls() {
         isDragging = false;
     };
 
-    // Daftarkan event listener ke elemen yang tepat
+    // Fungsi update yang akan dipanggil di loop utama (animate)
+    const update = (delta) => {
+        if (!controls) return;
+        const damping = 0.9; // Efek rem/peredam, semakin kecil semakin cepat berhenti
+        const sensitivity = 0.002; // Sensitivitas gerakan
+
+        // Terapkan pergerakan
+        controls.getObject().rotation.y -= moveX * sensitivity;
+        controls.getObject().rotation.x -= moveY * sensitivity;
+
+        // Batasi sudut pandang vertikal
+        controls.getObject().rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, controls.getObject().rotation.x));
+
+        // Kurangi pergerakan dengan damping agar berhenti perlahan
+        moveX *= damping;
+        moveY *= damping;
+    };
+
     vrContainer.addEventListener('touchstart', onTouchStart);
     vrContainer.addEventListener('touchmove', onTouchMove);
     vrContainer.addEventListener('touchend', onTouchEnd);
+
+    // Kembalikan fungsi update agar bisa dipanggil dari animate
+    return { update };
 }
 
 let joystickInstance;
@@ -262,8 +279,8 @@ function initJoystick() {
     joystickInstance.on('move', (evt, data) => {
         const angle = data.angle.radian;
         const force = data.force > 1 ? 1 : data.force;
-        velocity.x = Math.cos(angle) * force;
-        velocity.z = -Math.sin(angle) * force;
+        velocity.x = -Math.cos(angle) * force;
+        velocity.z = Math.sin(angle) * force;
     });
     joystickInstance.on('end', () => { velocity.x = 0; velocity.z = 0; });
 }
@@ -276,14 +293,12 @@ const minCameraY = 3.8; // Batas minimal ketinggian kamera
 function animate() {
     animationFrameId = requestAnimationFrame(animate);
     const delta = clock.getDelta();
-    const mobileSpeed = 20.0; // Kecepatan gerakan mobile
-    // Pastikan kontrol sudah siap sebelum menjalankan logika gerakan
+
     if (controls) {
-        // Logika gerakan Vertikal (berlaku untuk keyboard dan tombol mobile)
+        // --- LOGIKA GERAKAN VERTIKAL (Naik/Turun) ---
         const verticalSpeed = 15.0;
         if (moveUp) camera.position.y += verticalSpeed * delta;
-        
-        // Logika turun dengan deteksi lantai
+
         const downRaycaster = new THREE.Raycaster(controls.getObject().position, new THREE.Vector3(0, -1, 0));
         const downIntersects = downRaycaster.intersectObjects(collidableObjects, true);
 
@@ -291,46 +306,50 @@ function animate() {
             camera.position.y -= verticalSpeed * delta;
         }
 
-        // Selalu pastikan kamera tidak di bawah batas
         if (camera.position.y < minCameraY) {
             camera.position.y = minCameraY;
         }
 
 
-        // Logika gerakan Horizontal (hanya jika terkunci di desktop atau di mobile)
-        if (controls.isLocked === true || isMobile) {
+        // --- LOGIKA GERAKAN HORIZONTAL ---
+        if (isMobile) {
+            // === KHUSUS UNTUK HP (JOYSTICK) ===
+            const mobileSpeed = 20.0;
             
-            // Damping (efek berhenti perlahan untuk keyboard)
+            // 'velocity' diatur langsung oleh joystick, kita tinggal terapkan gerakannya
+            controls.moveRight(velocity.x * mobileSpeed * delta);
+            controls.moveForward(velocity.z * mobileSpeed * delta);
+            // Update arah pandang dari sentuhan
+            if (touchLookUpdater) {
+                touchLookUpdater.update(delta);
+            }
+        } else if (controls.isLocked === true) {
+            // === KHUSUS UNTUK DESKTOP (KEYBOARD) ===
             velocity.x -= velocity.x * 10.0 * delta;
             velocity.z -= velocity.z * 10.0 * delta;
 
-            // Ambil input dari keyboard (hanya untuk non-mobile)
-            if (!isMobile) {
-                direction.z = Number(moveForward) - Number(moveBackward);
-                direction.x = Number(moveRight) - Number(moveLeft);
-                direction.normalize(); // agar kecepatan diagonal sama
+            direction.z = Number(moveForward) - Number(moveBackward);
+            direction.x = Number(moveRight) - Number(moveLeft);
+            direction.normalize();
+            
+            const desktopSpeed = 50.0;
+            if (moveForward || moveBackward) velocity.z -= direction.z * desktopSpeed * delta;
+            if (moveLeft || moveRight) velocity.x -= direction.x * desktopSpeed * delta;
 
-                if (moveForward || moveBackward) velocity.z -= direction.z * 50.0 * delta;
-                if (moveLeft || moveRight) velocity.x -= direction.x * 50.0 * delta;
-            } else {
-                // Kecepatan desktop diatur dari atas, jadi tidak perlu pengali di sini
-                controls.moveRight(-velocity.x * mobileSpeed * delta);
-                controls.moveForward(-velocity.z * mobileSpeed * delta);
-            }
-
-            // Terapkan semua gerakan ke kamera (baik dari keyboard maupun joystick)
             controls.moveRight(-velocity.x * delta);
             controls.moveForward(-velocity.z * delta);
+        }
 
-            // === Cek interaksi dengan lukisan ===
+        // Tampilkan info lukisan dan posisi (hanya jika kontrol aktif)
+        if (controls.isLocked === true || isMobile) {
+            // Cek interaksi dengan lukisan
             const paintingRaycaster = new THREE.Raycaster();
-            paintingRaycaster.setFromCamera({ x: 0, y: 0 }, camera); // Tembakkan sinar dari tengah layar
+            paintingRaycaster.setFromCamera({ x: 0, y: 0 }, camera);
             const intersects = paintingRaycaster.intersectObjects(paintings);
-
             const paintingTitle = document.getElementById('painting-title');
             const paintingDescription = document.getElementById('painting-description');
 
-            if (intersects.length > 0 && intersects[0].distance < 5) { // Jika ada lukisan dalam jarak 5 unit
+            if (intersects.length > 0 && intersects[0].distance < 5) {
                 const obj = intersects[0].object;
                 paintingTitle.innerText = obj.userData.title;
                 paintingDescription.innerText = obj.userData.description;
@@ -338,12 +357,10 @@ function animate() {
             } else {
                 paintingInfoOverlay.classList.remove('visible');
             }
-            // Tampilkan posisi kamera di layar
+            
             cameraPositionDisplay.innerText = `Posisi: X: ${camera.position.x.toFixed(2)}, Y: ${camera.position.y.toFixed(2)}, Z: ${camera.position.z.toFixed(2)}`;
         }
     }
-
-    // Selalu render scene di setiap frame
     renderer.render(scene, camera);
 }
 
