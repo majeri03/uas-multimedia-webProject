@@ -42,15 +42,15 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 // === PENCAHAYAAN ===
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-scene.add(ambientLight);
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5);
 directionalLight.castShadow = true;
 directionalLight.shadow.mapSize.width = 512;
 directionalLight.shadow.mapSize.height = 512;
-directionalLight.position.set(10, 20, 5);
+directionalLight.position.set(15, 30, 10);
+directionalLight.shadow.camera.far = 100;
 scene.add(directionalLight);
-const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.5);
+const hemisphereLight = new THREE.HemisphereLight(0xadd8e6, 0x8B4513, 1.0);
 scene.add(hemisphereLight);
 
 // === LOADING MANAGER ===
@@ -89,7 +89,7 @@ gltfLoader.load('assets/models/AnyConv.com__pinisi3D.glb', (gltf) => {
 paintingsData.forEach(data => {
     const paintingTexture = textureLoader.load(data.imgSrc);
     paintingTexture.colorSpace = THREE.SRGBColorSpace;
-    const paintingMaterial = new THREE.MeshBasicMaterial({ map: paintingTexture, side: THREE.DoubleSide });
+    const paintingMaterial = new THREE.MeshBasicMaterial({ map: paintingTexture, side: THREE.DoubleSide, transparent: true, alphaTest: 0.5 });
     const paintingGeometry = new THREE.PlaneGeometry(4, 3);
     const painting = new THREE.Mesh(paintingGeometry, paintingMaterial);
     painting.position.copy(data.position);
@@ -276,7 +276,7 @@ const minCameraY = 3.8; // Batas minimal ketinggian kamera
 function animate() {
     animationFrameId = requestAnimationFrame(animate);
     const delta = clock.getDelta();
-    const mobileSpeed = 50.0; // Kecepatan gerakan mobile
+    const mobileSpeed = 20.0; // Kecepatan gerakan mobile
     // Pastikan kontrol sudah siap sebelum menjalankan logika gerakan
     if (controls) {
         // Logika gerakan Vertikal (berlaku untuk keyboard dan tombol mobile)
