@@ -21,6 +21,7 @@
                 <li><a href="#filosofi">Filosofi</a></li>
                 <li><a href="#tim">Tim</a></li>
                 <li><a href="#galeri">Galeri</a></li>
+                <li><a href="#virtual-tour">Virtual Reality</a></li>
                 <li><a href="#video">Video</a></li>
                 <li><a href="#lokasi">Lokasi</a></li>
                 <li><a href="#kontak">Kontak</a></li>
@@ -386,6 +387,46 @@
                 </div>
             </div>
         </section>
+        <section id="virtual-tour">
+            <div class="vr-showcase-container">
+                <div class="vr-icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="8" y="20" width="48" height="28" rx="4"/>
+                    <path d="M24 20v-8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v8"/>
+                    <circle cx="20" cy="34" r="4"/>
+                    <circle cx="44" cy="34" r="4"/>
+                    </svg>
+                </div>
+                <h2>Jelajahi Pinisi Secara Virtual</h2>
+                <p>
+                    Rasakan pengalaman imersif menelusuri setiap detail dek Kapal Pinisi, sebuah mahakarya maritim dari Sulawesi Selatan. Klik untuk memulai petualangan digital Anda.
+                </p>
+                <div id="tour-overlay">
+                    <button id="enter-vr-button" class="vr-button">Mulai VR Tour</button>
+                </div>
+            </div>
+
+            <div id="vr-container">
+                <div id="loading-screen">
+                    <div class="loading-spinner"></div>
+                    <p id="loading-text">Memuat Dunia Virtual...</p>
+                </div>
+                <canvas id="vr-canvas"></canvas>
+                <div id="pause-overlay">
+                    <div id="pause-text">Klik untuk Melanjutkan</div>
+                </div>
+                <div id="painting-info-overlay">
+                    <h3 id="painting-title"></h3>
+                    <p id="painting-description"></p>
+                </div>
+                <div id="joystick-container"></div>
+                <button id="exit-vr-button" class="vr-button exit-button">Keluar VR</button>
+                <button id="vr-up-button" class="vr-nav-button up-button">▲</button>
+                <button id="vr-down-button" class="vr-nav-button down-button">▼</button>
+                <div class="tour-instructions">Gunakan W,A,S,D,QE untuk bergerak dan naik turun, dan Mouse untuk melihat sekitar.</div>
+                <div id="camera-position" style="position: fixed; top: 10px; right: 10px; color: white; font-family: sans-serif; font-size: 12px; background-color: rgba(0, 0, 0, 0.5); padding: 5px;"></div>
+            </div>
+        </section>
         <section class="testimonials-section">
             <div class="testimonials-container">
                 <div class="testimonials-header">
@@ -650,5 +691,7 @@
     </div>
     </div>
     <script type="module" src="main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.10.1/nipplejs.min.js"></script>
+    <script type="module" src="vr-tour.js" defer></script>
 </body>
 </html>
