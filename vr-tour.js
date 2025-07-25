@@ -107,6 +107,9 @@ let moveForward = false, moveBackward = false, moveLeft = false, moveRight = fal
 const raycaster = new THREE.Raycaster();
 const paintingInfoOverlay = document.getElementById('painting-info-overlay');
 let animationFrameId = null;
+let isDragging = false;
+let previousTouchX = 0;
+let previousTouchY = 0;
 
 // === EVENT LISTENERS ===
 enterVRButton.addEventListener('click', () => {
@@ -205,6 +208,49 @@ function initMobileControls() {
     });
 
     initJoystick(); // Panggil inisialisasi joystick dari sini
+    initTouchLookControls();
+}
+
+function initTouchLookControls() {
+    const onTouchStart = (event) => {
+        // Hanya aktifkan jika sentuhan ada di luar area joystick dan tombol
+        const target = event.target;
+        if (target === canvas || target === pauseOverlay || target === vrContainer) {
+            isDragging = true;
+            previousTouchX = event.touches[0].clientX;
+            previousTouchY = event.touches[0].clientY;
+        }
+    };
+
+    const onTouchMove = (event) => {
+        if (!isDragging || !controls) return;
+        event.preventDefault();
+
+        const touchX = event.touches[0].clientX;
+        const touchY = event.touches[0].clientY;
+
+        const deltaX = touchX - previousTouchX;
+        const deltaY = touchY - previousTouchY;
+
+        // Memutar kamera berdasarkan pergeseran jari
+        controls.getObject().rotation.y -= deltaX * 0.005; // Kecepatan putar horizontal
+        controls.getObject().rotation.x -= deltaY * 0.005; // Kecepatan putar vertikal
+
+        // Batasi sudut pandang vertikal agar tidak terbalik
+        controls.getObject().rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, controls.getObject().rotation.x));
+        
+        previousTouchX = touchX;
+        previousTouchY = touchY;
+    };
+
+    const onTouchEnd = () => {
+        isDragging = false;
+    };
+
+    // Daftarkan event listener ke elemen yang tepat
+    vrContainer.addEventListener('touchstart', onTouchStart);
+    vrContainer.addEventListener('touchmove', onTouchMove);
+    vrContainer.addEventListener('touchend', onTouchEnd);
 }
 
 let joystickInstance;
@@ -264,8 +310,8 @@ function animate() {
                 direction.x = Number(moveRight) - Number(moveLeft);
                 direction.normalize(); // agar kecepatan diagonal sama
 
-                if (moveForward || moveBackward) velocity.z -= direction.z * 40.0 * delta;
-                if (moveLeft || moveRight) velocity.x -= direction.x * 40.0 * delta;
+                if (moveForward || moveBackward) velocity.z -= direction.z * 70.0 * delta;
+                if (moveLeft || moveRight) velocity.x -= direction.x * 70.0 * delta;
             }
 
             // Terapkan semua gerakan ke kamera (baik dari keyboard maupun joystick)
