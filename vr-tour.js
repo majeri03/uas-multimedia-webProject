@@ -233,8 +233,8 @@ function initTouchLookControls() {
         const deltaY = touchY - previousTouchY;
 
         // Memutar kamera berdasarkan pergeseran jari
-        controls.getObject().rotation.y -= deltaX * 0.005; // Kecepatan putar horizontal
-        controls.getObject().rotation.x -= deltaY * 0.005; // Kecepatan putar vertikal
+        controls.getObject().rotation.y -= deltaX * 0.008; // Kecepatan putar horizontal
+        controls.getObject().rotation.x -= deltaY * 0.008; // Kecepatan putar vertikal
 
         // Batasi sudut pandang vertikal agar tidak terbalik
         controls.getObject().rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, controls.getObject().rotation.x));
@@ -276,7 +276,7 @@ const minCameraY = 3.8; // Batas minimal ketinggian kamera
 function animate() {
     animationFrameId = requestAnimationFrame(animate);
     const delta = clock.getDelta();
-
+    const mobileSpeed = 50.0; // Kecepatan gerakan mobile
     // Pastikan kontrol sudah siap sebelum menjalankan logika gerakan
     if (controls) {
         // Logika gerakan Vertikal (berlaku untuk keyboard dan tombol mobile)
@@ -310,8 +310,12 @@ function animate() {
                 direction.x = Number(moveRight) - Number(moveLeft);
                 direction.normalize(); // agar kecepatan diagonal sama
 
-                if (moveForward || moveBackward) velocity.z -= direction.z * 70.0 * delta;
-                if (moveLeft || moveRight) velocity.x -= direction.x * 70.0 * delta;
+                if (moveForward || moveBackward) velocity.z -= direction.z * 50.0 * delta;
+                if (moveLeft || moveRight) velocity.x -= direction.x * 50.0 * delta;
+            } else {
+                // Kecepatan desktop diatur dari atas, jadi tidak perlu pengali di sini
+                controls.moveRight(-velocity.x * mobileSpeed * delta);
+                controls.moveForward(-velocity.z * mobileSpeed * delta);
             }
 
             // Terapkan semua gerakan ke kamera (baik dari keyboard maupun joystick)
